@@ -1,0 +1,40 @@
+{
+  "invoices": [
+    {
+      "id": "INV001",
+      "customerId": "CUST001",
+      "servicio": "Electricidad",
+      "periodo": "Enero 2024",
+      "monto": 1250.50,
+      "estado": "pendiente",
+      "fechaVencimiento": "2024-02-15"
+    },
+    {
+      "id": "INV002",
+      "customerId": "CUST001",
+      "servicio": "Agua",
+      "periodo": "Enero 2024",
+      "monto": 450.75,
+      "estado": "pendiente",
+      "fechaVencimiento": "2024-02-20"
+    },
+    {
+      "id": "INV003",
+      "customerId": "CUST002",
+      "servicio": "Internet",
+      "periodo": "Enero 2024",
+      "monto": 599.00,
+      "estado": "pendiente",
+      "fechaVencimiento": "2024-02-10"
+    },
+    {
+      "id": "INV004",
+      "customerId": "CUST002",
+      "servicio": "Telefonía",
+      "periodo": "Enero 2024",
+      "monto": 350.25,
+      "estado": "pendiente",
+      "fechaVencimiento": "2024-02-12"
+    }
+  ]
+}
