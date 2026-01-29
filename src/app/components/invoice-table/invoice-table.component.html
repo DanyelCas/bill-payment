@@ -1,0 +1,82 @@
+<div class="invoice-table-container">
+  <div
+    class="error-alert"
+    role="alert"
+    aria-live="assertive"
+    *ngIf="error"
+  >
+    <strong>Error:</strong> {{ error }}
+  </div>
+
+  <div
+    class="loading-spinner"
+    *ngIf="isLoading && !error"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="spinner"></div>
+    <p>Cargando facturas...</p>
+  </div>
+
+  <div
+    class="invoices-table-wrapper"
+    *ngIf="!isLoading && !error && invoices.length > 0"
+  >
+    <h3>Facturas ({{ invoices.length }})</h3>
+    <div class="table-wrapper">
+      <table class="invoices-table" role="table" aria-label="Tabla de facturas">
+        <thead>
+          <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Período</th>
+            <th scope="col">Monto</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td>{{ invoice.servicio }}</td>
+            <td>{{ invoice.periodo }}</td>
+            <td class="amount">{{ formatCurrency(invoice.monto) }}</td>
+            <td>
+              <span
+                class="estado-badge"
+                [ngClass]="getEstadoClass(invoice.estado)"
+                [attr.aria-label]="'Estado: ' + invoice.estado"
+              >
+                {{ invoice.estado | titlecase }}
+              </span>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-pay"
+                [disabled]="!isPending(invoice)"
+                (click)="onPayClick(invoice)"
+                [attr.aria-label]="
+                  isPending(invoice)
+                    ? 'Pagar factura de ' + invoice.servicio
+                    : 'Factura ya pagada'
+                "
+              >
+                Pagar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="!isLoading && !error && invoices.length === 0 && hasSearched"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="empty-state-icon">📄</div>
+    <h3>No hay facturas</h3>
+    <p>No se encontraron facturas para el cliente ingresado.</p>
+  </div>
+</div>

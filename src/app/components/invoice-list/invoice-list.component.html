@@ -1,76 +1,24 @@
 <div class="invoice-list-container">
-  <div class="form-section">
-    <h2>Consultar Facturas Pendientes</h2>
-    <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="invoice-form">
-      <div class="form-group">
-        <label for="customerId">ID de Cliente</label>
-        <input
-          type="text"
-          id="customerId"
-          formControlName="customerId"
-          class="form-control"
-          placeholder="Ej: CUST001"
-          [class.error]="customerIdControl?.invalid && customerIdControl?.touched"
-        />
-        <div class="error-message" *ngIf="customerIdErrors">
-          {{ customerIdErrors }}
-        </div>
-        <small class="form-hint">Ingrese un ID de cliente válido (6-12 caracteres alfanuméricos)</small>
-      </div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="invoiceForm.invalid || isLoading"
-      >
-        <span *ngIf="!isLoading">Buscar Facturas</span>
-        <span *ngIf="isLoading">Cargando...</span>
-      </button>
-    </form>
-  </div>
+  <app-invoice-search
+    [isLoading]="isLoading"
+    (search)="onSearch($event)"
+  ></app-invoice-search>
 
-  <div class="results-section" *ngIf="error || invoices.length > 0 || isLoading">
-    <div class="error-alert" *ngIf="error">
-      <strong>Error:</strong> {{ error }}
-    </div>
+  <app-invoice-table
+    [invoices]="invoices"
+    [isLoading]="isLoading"
+    [error]="error"
+    [hasSearched]="hasSearched"
+    (payInvoice)="onPayInvoice($event)"
+  ></app-invoice-table>
 
-    <div class="loading-spinner" *ngIf="isLoading && !error">
-      <p>Cargando facturas...</p>
-    </div>
-
-    <div class="invoices-table-container" *ngIf="!isLoading && !error && invoices.length > 0">
-      <h3>Facturas Pendientes ({{ invoices.length }})</h3>
-      <table class="invoices-table">
-        <thead>
-          <tr>
-            <th>Servicio</th>
-            <th>Período</th>
-            <th>Monto</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let invoice of invoices">
-            <td>{{ invoice.servicio }}</td>
-            <td>{{ invoice.periodo }}</td>
-            <td class="amount">{{ formatCurrency(invoice.monto) }}</td>
-            <td>
-              <span class="estado-badge" [ngClass]="getEstadoClass(invoice.estado)">
-                {{ invoice.estado | titlecase }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="payment-section">
-        <button class="btn btn-payment" disabled>
-          Realizar Pago
-        </button>
-        <small class="payment-hint">Funcionalidad de pago próximamente</small>
-      </div>
-    </div>
-
-    <div class="no-results" *ngIf="!isLoading && !error && invoices.length === 0 && invoiceForm.touched">
-      <p>No se encontraron facturas para el cliente ingresado.</p>
-    </div>
-  </div>
+  <app-invoice-payment
+    [invoice]="selectedInvoice"
+    [isOpen]="isPaymentModalOpen"
+    [isProcessing]="isProcessingPayment"
+    [paymentSuccess]="paymentSuccess"
+    [paymentError]="paymentError"
+    (close)="onClosePaymentModal()"
+    (confirmPayment)="onConfirmPayment($event)"
+  ></app-invoice-payment>
 </div>

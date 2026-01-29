@@ -1,0 +1,100 @@
+<div
+  class="modal-overlay"
+  *ngIf="isOpen"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'modal-title-' + invoice?.id"
+  [attr.aria-describedby]="'modal-description-' + invoice?.id"
+>
+  <div class="modal-container" *ngIf="invoice">
+    <div class="modal-header">
+      <h2 id="modal-title-{{ invoice.id }}" class="modal-title">
+        Confirmar Pago de Factura
+      </h2>
+      <button
+        type="button"
+        class="modal-close"
+        (click)="onClose()"
+        [disabled]="isProcessing"
+        aria-label="Cerrar modal"
+        title="Cerrar"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body" id="modal-description-{{ invoice.id }}">
+      <div class="invoice-details">
+        <div class="detail-section">
+          <h3>Detalles de la Factura</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Servicio:</span>
+              <span class="detail-value">{{ invoice.servicio }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Período:</span>
+              <span class="detail-value">{{ invoice.periodo }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Estado Actual:</span>
+              <span
+                class="detail-value estado-badge"
+                [ngClass]="getEstadoClass(invoice.estado)"
+              >
+                {{ invoice.estado | titlecase }}
+              </span>
+            </div>
+            <div class="detail-item highlight">
+              <span class="detail-label">Monto a Pagar:</span>
+              <span class="detail-value amount">{{ formatCurrency(invoice.monto) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-warning" *ngIf="invoice.estado === 'pendiente' && !isProcessing && !paymentSuccess">
+          <p>
+            <strong>⚠️ Atención:</strong> Al confirmar el pago, la factura
+            cambiará su estado a "Pagado" y no podrá ser modificada.
+          </p>
+        </div>
+
+        <div class="processing-message" *ngIf="isProcessing">
+          <div class="spinner-small"></div>
+          <p>Procesando pago...</p>
+        </div>
+
+        <div class="success-message" *ngIf="paymentSuccess && !isProcessing">
+          <div class="success-icon">✓</div>
+          <p><strong>¡Pago exitoso!</strong> La factura ha sido pagada correctamente.</p>
+        </div>
+
+        <div class="error-message" *ngIf="paymentError && !isProcessing">
+          <div class="error-icon">✕</div>
+          <p><strong>Error:</strong> {{ paymentError }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-cancel"
+        (click)="onClose()"
+        [disabled]="isProcessing"
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn btn-confirm"
+        (click)="onConfirm()"
+        [disabled]="isProcessing || invoice.estado === 'pagado'"
+      >
+        <span *ngIf="!isProcessing">Confirmar Pago</span>
+        <span *ngIf="isProcessing">Procesando...</span>
+      </button>
+    </div>
+  </div>
+</div>

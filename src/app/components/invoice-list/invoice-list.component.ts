@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InvoiceService } from '../../services/invoice.service';
 import { Invoice } from '../../models/invoice.model';
 
@@ -9,77 +8,95 @@ import { Invoice } from '../../models/invoice.model';
   styleUrls: ['./invoice-list.component.scss'],
 })
 export class InvoiceListComponent implements OnInit {
-  invoiceForm: FormGroup;
   invoices: Invoice[] = [];
   isLoading = false;
   error: string | null = null;
+  hasSearched = false;
+  
+  // Modal state
+  selectedInvoice: Invoice | null = null;
+  isPaymentModalOpen = false;
+  isProcessingPayment = false;
+  paymentSuccess = false;
+  paymentError: string | null = null;
+  currentCustomerId: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private invoiceService: InvoiceService
-  ) {
-    this.invoiceForm = this.fb.group({
-      customerId: ['', [Validators.required, Validators.pattern(/^[A-Z0-9]{6,12}$/)]],
-    });
-  }
+  constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {}
 
-  onSubmit(): void {
-    if (this.invoiceForm.valid) {
-      const customerId = this.invoiceForm.get('customerId')?.value;
-      this.loadInvoices(customerId);
-    }
+  onSearch(customerId: string): void {
+    this.currentCustomerId = customerId;
+    this.loadInvoices(customerId);
   }
 
   private loadInvoices(customerId: string): void {
     this.isLoading = true;
     this.error = null;
     this.invoices = [];
+    this.hasSearched = true;
 
-    this.invoiceService.getInvoicesByCustomerId(customerId).subscribe({
+    this.invoiceService.getInvoices(customerId).subscribe({
       next: (invoices) => {
         this.invoices = invoices;
         this.isLoading = false;
       },
       error: (err) => {
-        this.error = 'Error al cargar las facturas. Verifique que el mock API esté ejecutándose.';
+        this.error =
+          err?.message ||
+          'Error al cargar las facturas. Por favor, verifique que el servidor mock esté ejecutándose.';
         this.isLoading = false;
         console.error('Error loading invoices:', err);
       },
     });
   }
 
-  get customerIdControl() {
-    return this.invoiceForm.get('customerId');
-  }
-
-  get customerIdErrors() {
-    const control = this.customerIdControl;
-    if (control && control.touched && control.errors) {
-      if (control.errors['required']) {
-        return 'El ID de cliente es obligatorio';
-      }
-      if (control.errors['pattern']) {
-        return 'El ID debe tener entre 6 y 12 caracteres alfanuméricos';
-      }
+  onPayInvoice(invoice: Invoice): void {
+    if (invoice.estado === 'pagado') {
+      return;
     }
-    return null;
+    this.selectedInvoice = invoice;
+    this.isPaymentModalOpen = true;
+    this.paymentSuccess = false;
+    this.paymentError = null;
   }
 
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-    }).format(amount);
+  onClosePaymentModal(): void {
+    this.isPaymentModalOpen = false;
+    this.selectedInvoice = null;
+    this.paymentSuccess = false;
+    this.paymentError = null;
   }
 
-  getEstadoClass(estado: string): string {
-    const estadoMap: Record<string, string> = {
-      pendiente: 'estado-pendiente',
-      pagado: 'estado-pagado',
-      vencido: 'estado-vencido',
-    };
-    return estadoMap[estado] || '';
+  onConfirmPayment(invoice: Invoice): void {
+    this.isProcessingPayment = true;
+    this.paymentError = null;
+    this.paymentSuccess = false;
+
+    this.invoiceService.payInvoice(invoice.id).subscribe({
+      next: (updatedInvoice) => {
+        // Actualizar la factura en la lista localmente
+        const index = this.invoices.findIndex((inv) => inv.id === invoice.id);
+        if (index !== -1) {
+          this.invoices[index] = { ...this.invoices[index], estado: 'pagado' };
+        }
+        
+        this.isProcessingPayment = false;
+        this.paymentSuccess = true;
+        
+        // Cerrar modal después de un breve delay para mostrar éxito
+        setTimeout(() => {
+          this.onClosePaymentModal();
+        }, 2000);
+      },
+      error: (err) => {
+        this.isProcessingPayment = false;
+        this.paymentSuccess = false;
+        this.paymentError =
+          err?.message ||
+          'Error al procesar el pago. Por favor, intente nuevamente.';
+        console.error('Error paying invoice:', err);
+      },
+    });
   }
 }

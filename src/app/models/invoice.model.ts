@@ -1,9 +1,7 @@
 export interface Invoice {
-  id: string;
-  customerId: string;
+  id: number;
   servicio: string;
   periodo: string;
   monto: number;
-  estado: 'pendiente' | 'pagado' | 'vencido';
-  fechaVencimiento?: string;
+  estado: 'pendiente' | 'pagado';
 }
