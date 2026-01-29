@@ -1,9 +1,19 @@
 <div class="app-container">
-  <header class="app-header">
-    <h1>{{ title }}</h1>
-    <p class="subtitle">Sistema de Pago de Servicios</p>
+  <header class="app-header" *ngIf="authService.isAuthenticated()">
+    <div class="header-content">
+      <div class="brand">
+        <h1>{{ title }}</h1>
+        <p class="subtitle">Sistema de Pago de Servicios</p>
+      </div>
+      <div class="user-info" *ngIf="authService.getCurrentUser() as user">
+        <span class="user-name">Sesión: {{ user.name }}</span>
+        <button class="btn-logout" (click)="onLogout()">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
   </header>
   <main class="app-main">
-    <app-invoice-list></app-invoice-list>
+    <router-outlet></router-outlet>
   </main>
 </div>

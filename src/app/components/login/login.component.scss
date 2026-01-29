@@ -1,0 +1,109 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 1.75rem;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+
+            &:focus {
+                outline: none;
+                border-color: #3182ce;
+                box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+            }
+        }
+
+        .error-feedback {
+            color: #e53e3e;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 0.875rem;
+        background-color: #3182ce;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #2b6cb0;
+        }
+
+        &:disabled {
+            background-color: #a0aec0;
+            color: #edf2f7;
+            cursor: not-allowed;
+        }
+    }
+
+    .login-footer {
+        margin-top: 2rem;
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid #edf2f7;
+
+        a {
+            color: #718096;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: color 0.2s;
+
+            &:hover {
+                color: #3182ce;
+                text-decoration: underline;
+            }
+        }
+    }
+}

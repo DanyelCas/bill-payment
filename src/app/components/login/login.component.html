@@ -1,0 +1,46 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>{{ isAdminMode ? 'Administración' : 'Pago de Servicios' }}</h1>
+            <p>{{ isAdminMode ? 'Acceso restringido para personal autorizado' : 'Consulte y pague sus facturas
+                fácilmente' }}</p>
+        </div>
+
+        <!-- User Login Form -->
+        <form *ngIf="!isAdminMode" [formGroup]="userForm" (ngSubmit)="onUserLogin()">
+            <div class="form-group">
+                <label for="customerId">ID de Cliente</label>
+                <input id="customerId" type="text" formControlName="customerId" placeholder="Ej: 100001"
+                    autocomplete="off">
+                <div class="error-feedback"
+                    *ngIf="userForm.get('customerId')?.touched && userForm.get('customerId')?.invalid">
+                    Ingrese un ID válido (6-10 dígitos)
+                </div>
+            </div>
+            <button type="submit" [disabled]="userForm.invalid" class="btn-primary">
+                Ingresar
+            </button>
+        </form>
+
+        <!-- Admin Login Form -->
+        <form *ngIf="isAdminMode" [formGroup]="adminForm" (ngSubmit)="onAdminLogin()">
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input id="username" type="text" formControlName="username" autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input id="password" type="password" formControlName="password" autocomplete="current-password">
+            </div>
+            <button type="submit" [disabled]="adminForm.invalid" class="btn-primary">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <a href="javascript:void(0)" (click)="toggleMode()">
+                {{ isAdminMode ? 'Volver al acceso de clientes' : 'Iniciar sesión como administrador' }}
+            </a>
+        </div>
+    </div>
+</div>

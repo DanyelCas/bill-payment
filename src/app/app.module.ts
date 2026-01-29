@@ -9,6 +9,8 @@ import { InvoiceListComponent } from './components/invoice-list/invoice-list.com
 import { InvoiceSearchComponent } from './components/invoice-search/invoice-search.component';
 import { InvoiceTableComponent } from './components/invoice-table/invoice-table.component';
 import { InvoicePaymentComponent } from './components/invoice-payment/invoice-payment.component';
+import { LoginComponent } from './components/login/login.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { InvoicePaymentComponent } from './components/invoice-payment/invoice-pa
     InvoiceSearchComponent,
     InvoiceTableComponent,
     InvoicePaymentComponent,
+    LoginComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -28,4 +32,4 @@ import { InvoicePaymentComponent } from './components/invoice-payment/invoice-pa
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
