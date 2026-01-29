@@ -10,19 +10,10 @@
 
   <div class="invoices-table-wrapper" *ngIf="!isLoading && !error && invoices.length > 0">
     <h3>Facturas ({{ invoices.length }})</h3>
-    <div class="actions-toolbar" *ngIf="selectedInvoiceIds.size > 0">
-      <button class="btn btn-pay-selected" (click)="onPaySelected()">
-        Pagar Seleccionadas ({{ selectedInvoiceIds.size }})
-      </button>
-    </div>
     <div class="table-wrapper">
       <table class="invoices-table" role="table" aria-label="Tabla de facturas">
         <thead>
           <tr>
-            <th class="checkbox-col">
-              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)"
-                aria-label="Seleccionar todas las facturas pendientes" />
-            </th>
             <th scope="col">Servicio</th>
             <th scope="col">Período</th>
             <th scope="col">Monto</th>
@@ -32,10 +23,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let invoice of invoices">
-            <td class="checkbox-col">
-              <input type="checkbox" [checked]="selectedInvoiceIds.has(invoice.id)" [disabled]="!isPending(invoice)"
-                (change)="toggleSelection(invoice)" [attr.aria-label]="'Seleccionar factura ' + invoice.id" />
-            </td>
             <td>{{ invoice.servicio }}</td>
             <td>{{ invoice.periodo }}</td>
             <td class="amount">{{ formatCurrency(invoice.monto) }}</td>

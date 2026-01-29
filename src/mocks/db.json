@@ -2,34 +2,522 @@
   "invoices": [
     {
       "id": 1,
-      "customerId": "123456",
+      "customerId": "100001",
       "servicio": "Electricidad",
       "periodo": "Enero 2024",
-      "monto": 1250.5,
-      "estado": "pendiente"
+      "monto": 980.45,
+      "estado": "pagado"
     },
     {
       "id": 2,
-      "customerId": "123456",
+      "customerId": "100001",
       "servicio": "Agua",
       "periodo": "Enero 2024",
-      "monto": 450.75,
-      "estado": "pendiente"
+      "monto": 320.10,
+      "estado": "pagado"
     },
     {
       "id": 3,
-      "customerId": "789012",
+      "customerId": "100001",
       "servicio": "Internet",
-      "periodo": "Febrero 2024",
-      "monto": 599,
-      "estado": "pendiente"
+      "periodo": "Enero 2024",
+      "monto": 550.00,
+      "estado": "pagado"
     },
     {
       "id": 4,
-      "customerId": "789012",
-      "servicio": "Telefonía",
+      "customerId": "100001",
+      "servicio": "Electricidad",
       "periodo": "Febrero 2024",
-      "monto": 350.25,
+      "monto": 1010.30,
+      "estado": "pagado"
+    },
+    {
+      "id": 5,
+      "customerId": "100001",
+      "servicio": "Agua",
+      "periodo": "Febrero 2024",
+      "monto": 340.80,
+      "estado": "pagado"
+    },
+    {
+      "id": 6,
+      "customerId": "100001",
+      "servicio": "Internet",
+      "periodo": "Febrero 2024",
+      "monto": 550.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 7,
+      "customerId": "100002",
+      "servicio": "Electricidad",
+      "periodo": "Marzo 2024",
+      "monto": 1250.90,
+      "estado": "pagado"
+    },
+    {
+      "id": 8,
+      "customerId": "100002",
+      "servicio": "Telefonía",
+      "periodo": "Marzo 2024",
+      "monto": 280.50,
+      "estado": "pagado"
+    },
+    {
+      "id": 9,
+      "customerId": "100002",
+      "servicio": "Televisión por cable",
+      "periodo": "Marzo 2024",
+      "monto": 410.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 10,
+      "customerId": "100003",
+      "servicio": "Electricidad",
+      "periodo": "Abril 2024",
+      "monto": 1340.75,
+      "estado": "pagado"
+    },
+    {
+      "id": 11,
+      "customerId": "100003",
+      "servicio": "Agua",
+      "periodo": "Abril 2024",
+      "monto": 390.60,
+      "estado": "pagado"
+    },
+    {
+      "id": 12,
+      "customerId": "100003",
+      "servicio": "Internet",
+      "periodo": "Abril 2024",
+      "monto": 600.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 13,
+      "customerId": "100004",
+      "servicio": "Gas domiciliario",
+      "periodo": "Mayo 2024",
+      "monto": 210.40,
+      "estado": "pagado"
+    },
+    {
+      "id": 14,
+      "customerId": "100004",
+      "servicio": "Electricidad",
+      "periodo": "Mayo 2024",
+      "monto": 1420.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 15,
+      "customerId": "100005",
+      "servicio": "Electricidad",
+      "periodo": "Junio 2024",
+      "monto": 1505.90,
+      "estado": "pagado"
+    },
+    {
+      "id": 16,
+      "customerId": "100005",
+      "servicio": "Agua",
+      "periodo": "Junio 2024",
+      "monto": 450.20,
+      "estado": "pagado"
+    },
+    {
+      "id": 17,
+      "customerId": "100005",
+      "servicio": "Internet",
+      "periodo": "Junio 2024",
+      "monto": 620.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 18,
+      "customerId": "100006",
+      "servicio": "Electricidad",
+      "periodo": "Agosto 2024",
+      "monto": 1620.45,
+      "estado": "pagado"
+    },
+    {
+      "id": 19,
+      "customerId": "100006",
+      "servicio": "Telefonía",
+      "periodo": "Agosto 2024",
+      "monto": 310.70,
+      "estado": "pagado"
+    },
+    {
+      "id": 20,
+      "customerId": "100007",
+      "servicio": "Electricidad",
+      "periodo": "Enero 2025",
+      "monto": 1705.20,
+      "estado": "pagado"
+    },
+    {
+      "id": 21,
+      "customerId": "100007",
+      "servicio": "Agua",
+      "periodo": "Enero 2025",
+      "monto": 510.30,
+      "estado": "pagado"
+    },
+    {
+      "id": 22,
+      "customerId": "100007",
+      "servicio": "Internet",
+      "periodo": "Enero 2025",
+      "monto": 680.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 23,
+      "customerId": "100008",
+      "servicio": "Electricidad",
+      "periodo": "Julio 2025",
+      "monto": 1850.75,
+      "estado": "pagado"
+    },
+    {
+      "id": 24,
+      "customerId": "100008",
+      "servicio": "Agua",
+      "periodo": "Julio 2025",
+      "monto": 540.80,
+      "estado": "pagado"
+    },
+    {
+      "id": 25,
+      "customerId": "100009",
+      "servicio": "Internet",
+      "periodo": "Septiembre 2025",
+      "monto": 710.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 26,
+      "customerId": "100009",
+      "servicio": "Electricidad",
+      "periodo": "Septiembre 2025",
+      "monto": 1920.10,
+      "estado": "vencido"
+    },
+    {
+      "id": 27,
+      "customerId": "100010",
+      "servicio": "Electricidad",
+      "periodo": "Noviembre 2025",
+      "monto": 2010.90,
+      "estado": "vencido"
+    },
+    {
+      "id": 28,
+      "customerId": "100010",
+      "servicio": "Agua",
+      "periodo": "Noviembre 2025",
+      "monto": 590.60,
+      "estado": "pendiente"
+    },
+    {
+      "id": 29,
+      "customerId": "100011",
+      "servicio": "Internet",
+      "periodo": "Enero 2026",
+      "monto": 750.00,
+      "estado": "pendiente"
+    },
+    {
+      "id": 30,
+      "customerId": "100011",
+      "servicio": "Electricidad",
+      "periodo": "Enero 2026",
+      "monto": 2150.40,
+      "estado": "pendiente"
+    },
+    {
+      "id": 31,
+      "customerId": "100011",
+      "servicio": "Agua",
+      "periodo": "Enero 2026",
+      "monto": 620.90,
+      "estado": "pendiente"
+    },
+    {
+      "id": 101,
+      "customerId": "200001",
+      "servicio": "Electricidad",
+      "periodo": "Marzo 2024",
+      "monto": 890.30,
+      "estado": "pagado"
+    },
+    {
+      "id": 102,
+      "customerId": "200001",
+      "servicio": "Agua",
+      "periodo": "Marzo 2024",
+      "monto": 275.60,
+      "estado": "pagado"
+    },
+    {
+      "id": 103,
+      "customerId": "200002",
+      "servicio": "Internet",
+      "periodo": "Abril 2024",
+      "monto": 520.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 104,
+      "customerId": "200002",
+      "servicio": "Televisión por cable",
+      "periodo": "Abril 2024",
+      "monto": 430.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 105,
+      "customerId": "200003",
+      "servicio": "Electricidad",
+      "periodo": "Mayo 2024",
+      "monto": 1345.80,
+      "estado": "pagado"
+    },
+    {
+      "id": 106,
+      "customerId": "200003",
+      "servicio": "Gas domiciliario",
+      "periodo": "Mayo 2024",
+      "monto": 190.45,
+      "estado": "pagado"
+    },
+    {
+      "id": 107,
+      "customerId": "200004",
+      "servicio": "Agua",
+      "periodo": "Junio 2024",
+      "monto": 360.25,
+      "estado": "pagado"
+    },
+    {
+      "id": 108,
+      "customerId": "200004",
+      "servicio": "Electricidad",
+      "periodo": "Junio 2024",
+      "monto": 1480.60,
+      "estado": "pagado"
+    },
+    {
+      "id": 109,
+      "customerId": "200005",
+      "servicio": "Internet",
+      "periodo": "Julio 2024",
+      "monto": 580.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 110,
+      "customerId": "200005",
+      "servicio": "Telefonía",
+      "periodo": "Julio 2024",
+      "monto": 295.40,
+      "estado": "pagado"
+    },
+    {
+      "id": 111,
+      "customerId": "200006",
+      "servicio": "Electricidad",
+      "periodo": "Agosto 2024",
+      "monto": 1590.75,
+      "estado": "pagado"
+    },
+    {
+      "id": 112,
+      "customerId": "200006",
+      "servicio": "Agua",
+      "periodo": "Agosto 2024",
+      "monto": 410.90,
+      "estado": "pagado"
+    },
+    {
+      "id": 113,
+      "customerId": "200007",
+      "servicio": "Electricidad",
+      "periodo": "Septiembre 2024",
+      "monto": 1710.20,
+      "estado": "pagado"
+    },
+    {
+      "id": 114,
+      "customerId": "200007",
+      "servicio": "Internet",
+      "periodo": "Septiembre 2024",
+      "monto": 610.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 115,
+      "customerId": "200008",
+      "servicio": "Agua",
+      "periodo": "Octubre 2024",
+      "monto": 455.70,
+      "estado": "pagado"
+    },
+    {
+      "id": 116,
+      "customerId": "200008",
+      "servicio": "Electricidad",
+      "periodo": "Octubre 2024",
+      "monto": 1805.30,
+      "estado": "pagado"
+    },
+    {
+      "id": 117,
+      "customerId": "200009",
+      "servicio": "Internet",
+      "periodo": "Noviembre 2024",
+      "monto": 640.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 118,
+      "customerId": "200009",
+      "servicio": "Televisión por cable",
+      "periodo": "Noviembre 2024",
+      "monto": 470.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 119,
+      "customerId": "200010",
+      "servicio": "Electricidad",
+      "periodo": "Diciembre 2024",
+      "monto": 1980.45,
+      "estado": "pagado"
+    },
+    {
+      "id": 120,
+      "customerId": "200010",
+      "servicio": "Agua",
+      "periodo": "Diciembre 2024",
+      "monto": 520.80,
+      "estado": "pagado"
+    },
+    {
+      "id": 121,
+      "customerId": "200011",
+      "servicio": "Internet",
+      "periodo": "Enero 2025",
+      "monto": 690.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 122,
+      "customerId": "200011",
+      "servicio": "Electricidad",
+      "periodo": "Enero 2025",
+      "monto": 2050.90,
+      "estado": "pagado"
+    },
+    {
+      "id": 123,
+      "customerId": "200012",
+      "servicio": "Agua",
+      "periodo": "Febrero 2025",
+      "monto": 565.40,
+      "estado": "pagado"
+    },
+    {
+      "id": 124,
+      "customerId": "200012",
+      "servicio": "Electricidad",
+      "periodo": "Febrero 2025",
+      "monto": 2145.75,
+      "estado": "pagado"
+    },
+    {
+      "id": 125,
+      "customerId": "200013",
+      "servicio": "Internet",
+      "periodo": "Marzo 2025",
+      "monto": 720.00,
+      "estado": "pagado"
+    },
+    {
+      "id": 126,
+      "customerId": "200013",
+      "servicio": "Telefonía",
+      "periodo": "Marzo 2025",
+      "monto": 335.60,
+      "estado": "pagado"
+    },
+    {
+      "id": 127,
+      "customerId": "200014",
+      "servicio": "Electricidad",
+      "periodo": "Junio 2025",
+      "monto": 2280.10,
+      "estado": "vencido"
+    },
+    {
+      "id": 128,
+      "customerId": "200014",
+      "servicio": "Agua",
+      "periodo": "Junio 2025",
+      "monto": 610.25,
+      "estado": "pendiente"
+    },
+    {
+      "id": 129,
+      "customerId": "200015",
+      "servicio": "Internet",
+      "periodo": "Agosto 2025",
+      "monto": 760.00,
+      "estado": "vencido"
+    },
+    {
+      "id": 130,
+      "customerId": "200015",
+      "servicio": "Electricidad",
+      "periodo": "Agosto 2025",
+      "monto": 2395.80,
+      "estado": "vencido"
+    },
+    {
+      "id": 131,
+      "customerId": "200016",
+      "servicio": "Agua",
+      "periodo": "Octubre 2025",
+      "monto": 645.30,
+      "estado": "pendiente"
+    },
+    {
+      "id": 132,
+      "customerId": "200016",
+      "servicio": "Electricidad",
+      "periodo": "Octubre 2025",
+      "monto": 2520.60,
+      "estado": "pendiente"
+    },
+    {
+      "id": 133,
+      "customerId": "200017",
+      "servicio": "Internet",
+      "periodo": "Enero 2026",
+      "monto": 820.00,
+      "estado": "pendiente"
+    },
+    {
+      "id": 134,
+      "customerId": "200017",
+      "servicio": "Electricidad",
+      "periodo": "Enero 2026",
+      "monto": 2650.40,
       "estado": "pendiente"
     }
   ]

@@ -10,10 +10,10 @@ Single Page Application (SPA) profesional construida con **Angular 17** para ges
 
 ### 🎯 Funcionalidades
 
-- **🔍 Búsqueda de Facturas**: Formulario con validación para consultar facturas por ID de cliente
-- **📊 Tabla de Facturas**: Visualización clara y responsiva de facturas con información detallada
-- **💳 Modal de Pago**: Interfaz modal profesional para confirmar y procesar pagos
-- **⚡ Actualización Reactiva**: La UI se actualiza inmediatamente después de procesar un pago
+- **🔍 Búsqueda de Facturas**: Formulario con validación para consultar facturas por ID de cliente. La tabla permanece oculta hasta realizar una búsqueda exitosa.
+- **📊 Tabla de Facturas**: Visualización clara y responsiva de facturas con información detallada y estados diferenciados (pendiente, pagado, vencido).
+- **💳 Modal de Pago**: Interfaz modal profesional procesada mediante **SweetAlert2** para confirmar y procesar pagos.
+- **⚡ Actualización Reactiva**: La UI se actualiza inmediatamente después de procesar un pago sin necesidad de recargar la página.
 - **🎨 Diseño Responsivo**: Optimizado para dispositivos móviles y desktop
 - **♿ Accesibilidad**: Implementación de estándares ARIA y navegación por teclado
 
@@ -76,8 +76,8 @@ La aplicación estará disponible en `http://localhost:4200`
 1. **Abrir en el navegador**: Navegar a `http://localhost:4200`
 
 2. **Buscar Facturas**:
-   - Ingresar un ID de cliente (solo números)
-   - Ejemplos válidos: `123456`, `789012`
+    - Ingresar un ID de cliente (8-10 caracteres numéricos según validación)
+    - Ejemplos válidos: `100001`, `100010`, `200001`
    - Hacer clic en "Buscar"
 
 3. **Revisar Facturas**:
@@ -145,12 +145,15 @@ El proyecto utiliza **JSON Server** para simular una API REST completa.
 
 El archivo `src/mocks/db.json` incluye facturas de ejemplo:
 
-- **Cliente `123456`**: 
-  - Electricidad - Enero 2024 - $1,250.50 (pendiente)
-  - Agua - Enero 2024 - $450.75 (pendiente)
-- **Cliente `789012`**: 
-  - Internet - Febrero 2024 - $599.00 (pendiente)
-  - Telefonía - Febrero 2024 - $350.25 (pagado)
+- **Cliente `100001`**: 
+  - Electricidad, Agua, Internet - Enero 2024 (todos pagados)
+  - Electricidad, Agua, Internet - Febrero 2024 (todos pagados)
+- **Cliente `100010`**: 
+  - Electricidad - Noviembre 2025 (vencido)
+  - Agua - Noviembre 2025 (pendiente)
+- **Cliente `200014`**:
+  - Electricidad - Junio 2025 (vencido)
+  - Agua - Junio 2025 (pendiente)
 
 ### Comandos Mock API
 
