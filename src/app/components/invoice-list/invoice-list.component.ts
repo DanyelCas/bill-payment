@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../../services/invoice.service';
 import { Invoice } from '../../models/invoice.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-invoice-list',
@@ -12,18 +13,18 @@ export class InvoiceListComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
   hasSearched = false;
-  
+
   // Modal state
-  selectedInvoice: Invoice | null = null;
+  selectedInvoicesForPayment: Invoice[] = [];
   isPaymentModalOpen = false;
   isProcessingPayment = false;
   paymentSuccess = false;
   paymentError: string | null = null;
   currentCustomerId: string | null = null;
 
-  constructor(private invoiceService: InvoiceService) {}
+  constructor(private invoiceService: InvoiceService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSearch(customerId: string): void {
     this.currentCustomerId = customerId;
@@ -55,7 +56,7 @@ export class InvoiceListComponent implements OnInit {
     if (invoice.estado === 'pagado') {
       return;
     }
-    this.selectedInvoice = invoice;
+    this.selectedInvoicesForPayment = [invoice];
     this.isPaymentModalOpen = true;
     this.paymentSuccess = false;
     this.paymentError = null;
@@ -63,31 +64,41 @@ export class InvoiceListComponent implements OnInit {
 
   onClosePaymentModal(): void {
     this.isPaymentModalOpen = false;
-    this.selectedInvoice = null;
+    this.selectedInvoicesForPayment = [];
     this.paymentSuccess = false;
     this.paymentError = null;
   }
 
-  onConfirmPayment(invoice: Invoice): void {
+  onConfirmPayment(invoices: Invoice[]): void {
     this.isProcessingPayment = true;
     this.paymentError = null;
     this.paymentSuccess = false;
 
-    this.invoiceService.payInvoice(invoice.id).subscribe({
-      next: (updatedInvoice) => {
-        // Actualizar la factura en la lista localmente
-        const index = this.invoices.findIndex((inv) => inv.id === invoice.id);
-        if (index !== -1) {
-          this.invoices[index] = { ...this.invoices[index], estado: 'pagado' };
-        }
-        
+    const ids = invoices.map((i) => i.id);
+
+    this.invoiceService.payInvoices(ids).subscribe({
+      next: (updatedInvoices) => {
+        // Actualizar facturas localmente
+        updatedInvoices.forEach((updated) => {
+          const index = this.invoices.findIndex((inv) => inv.id === updated.id);
+          if (index !== -1) {
+            this.invoices[index] = { ...this.invoices[index], estado: 'pagado' };
+          }
+        });
+
         this.isProcessingPayment = false;
         this.paymentSuccess = true;
-        
-        // Cerrar modal después de un breve delay para mostrar éxito
-        setTimeout(() => {
-          this.onClosePaymentModal();
-        }, 2000);
+
+        // Cerrar modal y mostrar SweetAlert
+        this.onClosePaymentModal();
+
+        Swal.fire({
+          title: '¡Pago Exitoso!',
+          text: `Se han procesado ${updatedInvoices.length} factura(s) correctamente.`,
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#667eea'
+        });
       },
       error: (err) => {
         this.isProcessingPayment = false;
@@ -96,7 +107,23 @@ export class InvoiceListComponent implements OnInit {
           err?.message ||
           'Error al procesar el pago. Por favor, intente nuevamente.';
         console.error('Error paying invoice:', err);
+
+        Swal.fire({
+          title: 'Error',
+          text: this.paymentError || 'Ocurrió un error inesperado.',
+          icon: 'error',
+          confirmButtonText: 'Cerrar'
+        });
       },
     });
+  }
+
+  onPayInvoices(invoices: Invoice[]): void {
+    if (invoices.length === 0) return;
+
+    this.selectedInvoicesForPayment = invoices;
+    this.isPaymentModalOpen = true;
+    this.paymentSuccess = false;
+    this.paymentError = null;
   }
 }

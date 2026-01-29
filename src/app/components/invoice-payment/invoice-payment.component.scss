@@ -18,6 +18,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -42,6 +43,7 @@
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -188,6 +190,71 @@
   }
 }
 
+.bulk-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+.bulk-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .bulk-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bulk-service {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.9375rem;
+  }
+
+  .bulk-period {
+    font-size: 0.8125rem;
+    color: #718096;
+  }
+
+  .bulk-amount {
+    font-weight: 600;
+    color: #2d3748;
+  }
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+
+  .total-label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #2d3748;
+  }
+
+  .total-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #48bb78;
+  }
+}
+
 .payment-warning {
   background: #fff3cd;
   border: 1px solid #ffc107;
@@ -310,6 +377,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

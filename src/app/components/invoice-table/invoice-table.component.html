@@ -1,32 +1,28 @@
-<div class="invoice-table-container">
-  <div
-    class="error-alert"
-    role="alert"
-    aria-live="assertive"
-    *ngIf="error"
-  >
+<div class="invoice-table-container" *ngIf="hasSearched || isLoading || error">
+  <div class="error-alert" role="alert" aria-live="assertive" *ngIf="error">
     <strong>Error:</strong> {{ error }}
   </div>
 
-  <div
-    class="loading-spinner"
-    *ngIf="isLoading && !error"
-    role="status"
-    aria-live="polite"
-  >
+  <div class="loading-spinner" *ngIf="isLoading && !error" role="status" aria-live="polite">
     <div class="spinner"></div>
     <p>Cargando facturas...</p>
   </div>
 
-  <div
-    class="invoices-table-wrapper"
-    *ngIf="!isLoading && !error && invoices.length > 0"
-  >
+  <div class="invoices-table-wrapper" *ngIf="!isLoading && !error && invoices.length > 0">
     <h3>Facturas ({{ invoices.length }})</h3>
+    <div class="actions-toolbar" *ngIf="selectedInvoiceIds.size > 0">
+      <button class="btn btn-pay-selected" (click)="onPaySelected()">
+        Pagar Seleccionadas ({{ selectedInvoiceIds.size }})
+      </button>
+    </div>
     <div class="table-wrapper">
       <table class="invoices-table" role="table" aria-label="Tabla de facturas">
         <thead>
           <tr>
+            <th class="checkbox-col">
+              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)"
+                aria-label="Seleccionar todas las facturas pendientes" />
+            </th>
             <th scope="col">Servicio</th>
             <th scope="col">Período</th>
             <th scope="col">Monto</th>
@@ -36,30 +32,26 @@
         </thead>
         <tbody>
           <tr *ngFor="let invoice of invoices">
+            <td class="checkbox-col">
+              <input type="checkbox" [checked]="selectedInvoiceIds.has(invoice.id)" [disabled]="!isPending(invoice)"
+                (change)="toggleSelection(invoice)" [attr.aria-label]="'Seleccionar factura ' + invoice.id" />
+            </td>
             <td>{{ invoice.servicio }}</td>
             <td>{{ invoice.periodo }}</td>
             <td class="amount">{{ formatCurrency(invoice.monto) }}</td>
             <td>
-              <span
-                class="estado-badge"
-                [ngClass]="getEstadoClass(invoice.estado)"
-                [attr.aria-label]="'Estado: ' + invoice.estado"
-              >
+              <span class="estado-badge" [ngClass]="getEstadoClass(invoice.estado)"
+                [attr.aria-label]="'Estado: ' + invoice.estado">
                 {{ invoice.estado | titlecase }}
               </span>
             </td>
             <td>
-              <button
-                type="button"
-                class="btn btn-pay"
-                [disabled]="!isPending(invoice)"
-                (click)="onPayClick(invoice)"
+              <button type="button" class="btn btn-pay" [disabled]="!isPending(invoice)" (click)="onPayClick(invoice)"
                 [attr.aria-label]="
                   isPending(invoice)
                     ? 'Pagar factura de ' + invoice.servicio
                     : 'Factura ya pagada'
-                "
-              >
+                ">
                 Pagar
               </button>
             </td>
@@ -69,12 +61,8 @@
     </div>
   </div>
 
-  <div
-    class="empty-state"
-    *ngIf="!isLoading && !error && invoices.length === 0 && hasSearched"
-    role="status"
-    aria-live="polite"
-  >
+  <div class="empty-state" *ngIf="!isLoading && !error && invoices.length === 0 && hasSearched" role="status"
+    aria-live="polite">
     <div class="empty-state-icon">📄</div>
     <h3>No hay facturas</h3>
     <p>No se encontraron facturas para el cliente ingresado.</p>

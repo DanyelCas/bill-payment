@@ -6,7 +6,7 @@
       "servicio": "Electricidad",
       "periodo": "Enero 2024",
       "monto": 1250.5,
-      "estado": "pagado"
+      "estado": "pendiente"
     },
     {
       "id": 2,
@@ -30,7 +30,7 @@
       "servicio": "Telefonía",
       "periodo": "Febrero 2024",
       "monto": 350.25,
-      "estado": "pagado"
+      "estado": "pendiente"
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, delay } from 'rxjs';
+import { Observable, throwError, delay, forkJoin } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Invoice } from '../models/invoice.model';
 
@@ -10,7 +10,7 @@ import { Invoice } from '../models/invoice.model';
 export class InvoiceService {
   private readonly apiUrl = 'http://localhost:3000';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   getInvoices(customerId: string): Observable<Invoice[]> {
     return this.http
@@ -49,5 +49,10 @@ export class InvoiceService {
           );
         })
       );
+  }
+
+  payInvoices(invoiceIds: number[]): Observable<Invoice[]> {
+    const requests = invoiceIds.map((id) => this.payInvoice(id));
+    return forkJoin(requests);
   }
 }

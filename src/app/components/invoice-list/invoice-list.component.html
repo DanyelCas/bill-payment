@@ -1,24 +1,10 @@
 <div class="invoice-list-container">
-  <app-invoice-search
-    [isLoading]="isLoading"
-    (search)="onSearch($event)"
-  ></app-invoice-search>
+  <app-invoice-search [isLoading]="isLoading" (search)="onSearch($event)"></app-invoice-search>
 
-  <app-invoice-table
-    [invoices]="invoices"
-    [isLoading]="isLoading"
-    [error]="error"
-    [hasSearched]="hasSearched"
-    (payInvoice)="onPayInvoice($event)"
-  ></app-invoice-table>
+  <app-invoice-table [invoices]="invoices" [isLoading]="isLoading" [error]="error" [hasSearched]="hasSearched"
+    (payInvoice)="onPayInvoice($event)" (payInvoices)="onPayInvoices($event)"></app-invoice-table>
 
-  <app-invoice-payment
-    [invoice]="selectedInvoice"
-    [isOpen]="isPaymentModalOpen"
-    [isProcessing]="isProcessingPayment"
-    [paymentSuccess]="paymentSuccess"
-    [paymentError]="paymentError"
-    (close)="onClosePaymentModal()"
-    (confirmPayment)="onConfirmPayment($event)"
-  ></app-invoice-payment>
+  <app-invoice-payment [invoices]="selectedInvoicesForPayment" [isOpen]="isPaymentModalOpen"
+    [isProcessing]="isProcessingPayment" [paymentSuccess]="paymentSuccess" [paymentError]="paymentError"
+    (close)="onClosePaymentModal()" (confirmPayment)="onConfirmPayment($event)"></app-invoice-payment>
 </div>

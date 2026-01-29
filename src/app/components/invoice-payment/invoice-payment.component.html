@@ -1,62 +1,66 @@
-<div
-  class="modal-overlay"
-  *ngIf="isOpen"
-  (click)="onBackdropClick($event)"
-  role="dialog"
-  aria-modal="true"
-  [attr.aria-labelledby]="'modal-title-' + invoice?.id"
-  [attr.aria-describedby]="'modal-description-' + invoice?.id"
->
-  <div class="modal-container" *ngIf="invoice">
+<div class="modal-overlay" *ngIf="isOpen" (click)="onBackdropClick($event)" role="dialog" aria-modal="true"
+  [attr.aria-labelledby]="'modal-title-payment'" [attr.aria-describedby]="'modal-description-payment'">
+  <div class="modal-container" *ngIf="invoices.length > 0">
     <div class="modal-header">
-      <h2 id="modal-title-{{ invoice.id }}" class="modal-title">
-        Confirmar Pago de Factura
+      <h2 id="modal-title-payment" class="modal-title">
+        {{ invoices.length > 1 ? 'Confirmar Pago Masivo' : 'Confirmar Pago de Factura' }}
       </h2>
-      <button
-        type="button"
-        class="modal-close"
-        (click)="onClose()"
-        [disabled]="isProcessing"
-        aria-label="Cerrar modal"
-        title="Cerrar"
-      >
+      <button type="button" class="modal-close" (click)="onClose()" [disabled]="isProcessing" aria-label="Cerrar modal"
+        title="Cerrar">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="modal-body" id="modal-description-{{ invoice.id }}">
+    <div class="modal-body" id="modal-description-payment">
       <div class="invoice-details">
-        <div class="detail-section">
+
+        <!-- Single Invoice View -->
+        <div class="detail-section" *ngIf="singleInvoice">
           <h3>Detalles de la Factura</h3>
           <div class="detail-grid">
             <div class="detail-item">
               <span class="detail-label">Servicio:</span>
-              <span class="detail-value">{{ invoice.servicio }}</span>
+              <span class="detail-value">{{ singleInvoice.servicio }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Período:</span>
-              <span class="detail-value">{{ invoice.periodo }}</span>
+              <span class="detail-value">{{ singleInvoice.periodo }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Estado Actual:</span>
-              <span
-                class="detail-value estado-badge"
-                [ngClass]="getEstadoClass(invoice.estado)"
-              >
-                {{ invoice.estado | titlecase }}
+              <span class="detail-value estado-badge" [ngClass]="getEstadoClass(singleInvoice.estado)">
+                {{ singleInvoice.estado | titlecase }}
               </span>
             </div>
             <div class="detail-item highlight">
               <span class="detail-label">Monto a Pagar:</span>
-              <span class="detail-value amount">{{ formatCurrency(invoice.monto) }}</span>
+              <span class="detail-value amount">{{ formatCurrency(singleInvoice.monto) }}</span>
             </div>
           </div>
         </div>
 
-        <div class="payment-warning" *ngIf="invoice.estado === 'pendiente' && !isProcessing && !paymentSuccess">
+        <!-- Bulk Invoice View -->
+        <div class="detail-section" *ngIf="invoices.length > 1">
+          <h3>Resumen de Facturas a Pagar ({{ invoices.length }})</h3>
+          <div class="bulk-list">
+            <div class="bulk-item" *ngFor="let inv of invoices">
+              <div class="bulk-info">
+                <span class="bulk-service">{{ inv.servicio }}</span>
+                <span class="bulk-period">{{ inv.periodo }}</span>
+              </div>
+              <span class="bulk-amount">{{ formatCurrency(inv.monto) }}</span>
+            </div>
+          </div>
+          <div class="total-section">
+            <span class="total-label">Total a Pagar:</span>
+            <span class="total-amount">{{ formatCurrency(totalAmount) }}</span>
+          </div>
+        </div>
+
+        <div class="payment-warning" *ngIf="!isProcessing && !paymentSuccess">
           <p>
-            <strong>⚠️ Atención:</strong> Al confirmar el pago, la factura
-            cambiará su estado a "Pagado" y no podrá ser modificada.
+            <strong>⚠️ Atención:</strong> Al confirmar, {{ invoices.length > 1 ? 'las facturas seleccionadas cambiarán'
+            : 'la factura cambiará' }} su estado a "Pagado".
           </p>
         </div>
 
@@ -78,20 +82,10 @@
     </div>
 
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-cancel"
-        (click)="onClose()"
-        [disabled]="isProcessing"
-      >
+      <button type="button" class="btn btn-cancel" (click)="onClose()" [disabled]="isProcessing">
         Cancelar
       </button>
-      <button
-        type="button"
-        class="btn btn-confirm"
-        (click)="onConfirm()"
-        [disabled]="isProcessing || invoice.estado === 'pagado'"
-      >
+      <button type="button" class="btn btn-confirm" (click)="onConfirm()" [disabled]="isProcessing">
         <span *ngIf="!isProcessing">Confirmar Pago</span>
         <span *ngIf="isProcessing">Procesando...</span>
       </button>
