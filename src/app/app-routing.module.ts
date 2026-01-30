@@ -8,12 +8,14 @@ import { roleGuard } from './guards/role.guard';
 import { guestGuard } from './guards/guest.guard';
 import { UserRole } from './models/user.model';
 
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
   {
     path: 'invoices',
-    component: InvoiceListComponent,
+    component: DashboardComponent,
     canActivate: [authGuard, roleGuard],
     data: { role: UserRole.USER }
   },

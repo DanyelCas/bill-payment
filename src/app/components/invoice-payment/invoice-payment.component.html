@@ -20,21 +20,21 @@
           <div class="detail-grid">
             <div class="detail-item">
               <span class="detail-label">Servicio:</span>
-              <span class="detail-value">{{ singleInvoice.servicio }}</span>
+              <span class="detail-value">{{ singleInvoice?.servicio }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Período:</span>
-              <span class="detail-value">{{ singleInvoice.periodo }}</span>
+              <span class="detail-value">{{ singleInvoice?.periodo }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Estado Actual:</span>
-              <span class="detail-value estado-badge" [ngClass]="getEstadoClass(singleInvoice.estado)">
-                {{ singleInvoice.estado | titlecase }}
+              <span class="detail-value estado-badge" [ngClass]="singleInvoice ? getEstadoClass(singleInvoice) : ''">
+                {{ singleInvoice ? (isOverdue(singleInvoice) ? 'Vencida' : (singleInvoice.estado | titlecase)) : '' }}
               </span>
             </div>
             <div class="detail-item highlight">
               <span class="detail-label">Monto a Pagar:</span>
-              <span class="detail-value amount">{{ formatCurrency(singleInvoice.monto) }}</span>
+              <span class="detail-value amount">{{ singleInvoice ? formatCurrency(singleInvoice.monto) : '' }}</span>
             </div>
           </div>
         </div>

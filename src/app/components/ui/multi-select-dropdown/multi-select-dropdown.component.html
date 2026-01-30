@@ -1,0 +1,45 @@
+<div class="dropdown-container" [class.is-open]="isOpen">
+    <!-- Trigger Button -->
+    <button type="button" class="dropdown-trigger" (click)="toggleDropdown()">
+        <div class="trigger-content">
+            <lucide-icon [name]="icon" [size]="18" class="trigger-icon"></lucide-icon>
+            <span class="trigger-label">{{ buttonLabel }}</span>
+        </div>
+        <lucide-icon name="chevron-down" [size]="16" class="chevron-icon"></lucide-icon>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu animate__animated animate__fadeIn" *ngIf="isOpen">
+        <!-- Search (Optional, only if many options) -->
+        <div class="dropdown-search" *ngIf="options.length > 5">
+            <lucide-icon name="search" [size]="14" class="search-icon"></lucide-icon>
+            <input type="text" [(ngModel)]="searchText" placeholder="Buscar..." (click)="$event.stopPropagation()">
+        </div>
+
+        <div class="dropdown-list">
+            <div class="dropdown-item" *ngFor="let option of filteredOptions"
+                (click)="toggleSelection(option.value, $event)" [class.selected]="isSelected(option.value)">
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" [checked]="isSelected(option.value)" tabindex="-1">
+                </div>
+
+                <div class="item-content">
+                    <span class="item-label">{{ option.label }}</span>
+
+                    <!-- Badge Support (e.g. for Vencida) -->
+                    <span *ngIf="option.badgeClass" class="item-badge" [ngClass]="option.badgeClass">
+                        {{ option.badgeLabel || option.label }}
+                        <!-- Optional icon inside badge -->
+                        <lucide-icon *ngIf="option.badgeClass.includes('vencida')" name="alert-circle"
+                            [size]="12"></lucide-icon>
+                    </span>
+                </div>
+            </div>
+
+            <div class="no-results" *ngIf="filteredOptions.length === 0">
+                No se encontraron resultados
+            </div>
+        </div>
+    </div>
+</div>

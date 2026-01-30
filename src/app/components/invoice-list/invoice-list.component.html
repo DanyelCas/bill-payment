@@ -1,7 +1,7 @@
 <div class="invoice-list-container">
-  <app-invoice-search [isLoading]="isLoading" (search)="onSearch($event)"></app-invoice-search>
+  <!-- Search Removed: Auto-load for logged in user -->
 
-  <app-invoice-table [invoices]="invoices" [isLoading]="isLoading" [error]="error" [hasSearched]="hasSearched"
+  <app-invoice-table [invoices]="invoices" [isLoading]="isLoading" [error]="error" [hasSearched]="true"
     (payInvoice)="onPayInvoice($event)" (payInvoices)="onPayInvoices($event)"></app-invoice-table>
 
   <app-invoice-payment [invoices]="selectedInvoicesForPayment" [isOpen]="isPaymentModalOpen"

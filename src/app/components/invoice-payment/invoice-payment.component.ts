@@ -25,18 +25,27 @@ export class InvoicePaymentComponent {
   }
 
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
+    return 'Bs. ' + new Intl.NumberFormat('es-BO', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     }).format(amount);
   }
 
-  getEstadoClass(estado: string): string {
-    const estadoMap: Record<string, string> = {
-      pendiente: 'estado-pendiente',
-      pagado: 'estado-pagado',
-    };
-    return estadoMap[estado] || '';
+  isOverdue(invoice: Invoice): boolean {
+    if (invoice.estado !== 'pendiente') return false;
+    if (invoice.fechaVencimiento) {
+      const agnostica = new Date(invoice.fechaVencimiento + 'T00:00:00');
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      return agnostica < hoy;
+    }
+    return false;
+  }
+
+  getEstadoClass(invoice: Invoice): string {
+    if (invoice.estado === 'pagado') return 'estado-pagado';
+    if (this.isOverdue(invoice)) return 'estado-vencida';
+    return 'estado-pendiente';
   }
 
   onClose(): void {

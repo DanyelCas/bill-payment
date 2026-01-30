@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { User, UserRole } from '../models/user.model';
 import { Router } from '@angular/router';
 
@@ -15,7 +17,10 @@ export class AuthService {
         password: 'password123'
     };
 
-    constructor(private readonly router: Router) {
+    constructor(
+        private readonly router: Router,
+        private readonly http: HttpClient
+    ) {
         this.loadSession();
     }
 
@@ -35,35 +40,37 @@ export class AuthService {
         return this.currentUserSubject.value;
     }
 
-    loginUser(customerId: string): boolean {
-        // Basic validation for customerId (e.g. 6-10 digits)
-        if (!/^\d{6,10}$/.test(customerId)) {
-            return false;
+    login(id: string): Observable<boolean> {
+        // Admin check
+        if (id === 'ADMIN') {
+            const adminUser: User = { id: 'ADMIN', name: 'Administrador', role: UserRole.ADMIN };
+            this.setSession(adminUser);
+            return of(true);
         }
 
-        const user: User = {
-            id: customerId,
-            name: `Cliente ${customerId}`,
-            role: UserRole.USER
-        };
-
-        this.setSession(user);
-        return true;
+        // User check via API
+        return this.http.get<User[]>(`http://localhost:3000/users?id=${id}`).pipe(
+            map((users: User[]) => {
+                if (users.length > 0) {
+                    const userFromApi = users[0];
+                    const user: User = {
+                        id: userFromApi.id.toString(), // Ensure string
+                        name: userFromApi.name,
+                        role: UserRole.USER
+                    };
+                    this.setSession(user);
+                    return true;
+                }
+                return false;
+            }),
+            catchError(error => {
+                console.error('Login error', error);
+                return of(false);
+            })
+        );
     }
 
-    loginAdmin(username: string, password: string): boolean {
-        if (username === this.ADMIN_MOCK.username && password === this.ADMIN_MOCK.password) {
-            const user: User = {
-                id: 'admin-001',
-                name: 'Administrador del Sistema',
-                username: username,
-                role: UserRole.ADMIN
-            };
-            this.setSession(user);
-            return true;
-        }
-        return false;
-    }
+    // loginAdmin method is removed as its functionality is integrated into the new login method
 
     private setSession(user: User): void {
         localStorage.setItem('currentUser', JSON.stringify(user));

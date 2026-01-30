@@ -44,8 +44,8 @@
 
       &:focus {
         outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-bg);
       }
 
       &.error {
@@ -84,12 +84,12 @@
     min-width: 120px;
 
     &.btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
       color: white;
 
       &:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
       }
 
       &:active:not(:disabled) {
@@ -103,7 +103,7 @@
       }
 
       &:focus-visible {
-        outline: 3px solid rgba(102, 126, 234, 0.5);
+        outline: 3px solid var(--color-primary-bg);
         outline-offset: 2px;
       }
     }

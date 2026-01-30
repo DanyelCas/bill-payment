@@ -9,36 +9,87 @@
   </div>
 
   <div class="invoices-table-wrapper" *ngIf="!isLoading && !error && invoices.length > 0">
-    <h3>Facturas ({{ invoices.length }})</h3>
-    <div class="table-wrapper">
+    <div class="overdue-alert animate__animated animate__headShake" *ngIf="overdueInvoicesCount > 0">
+      <lucide-icon name="circle-alert" [size]="18"></lucide-icon>
+      <span>Tienes <strong>{{ overdueInvoicesCount }}</strong> {{ overdueInvoicesCount === 1 ? 'factura fuera de fecha'
+        : 'facturas fuera de fecha' }}. Te recomendamos pagarlas pronto.</span>
+    </div>
+
+    <div class="table-header-actions">
+      <div class="header-left">
+        <h3>
+          <lucide-icon name="file-text" [size]="24" class="header-icon"></lucide-icon>
+          Facturas ({{ displayedInvoices.length }})
+        </h3>
+
+        <div class="filters-bar animate__animated animate__fadeIn">
+          <div class="filter-wrapper">
+            <app-multi-select-dropdown placeholder="Servicios" icon="package" [options]="serviceOptions"
+              [selectedValues]="serviceFilter" (selectionChange)="onServiceFilterChange($event)">
+            </app-multi-select-dropdown>
+          </div>
+
+          <div class="filter-wrapper">
+            <app-multi-select-dropdown placeholder="Estados" icon="circle-check" [options]="statusOptions"
+              [selectedValues]="statusFilter" (selectionChange)="onStatusFilterChange($event)">
+            </app-multi-select-dropdown>
+          </div>
+
+          <button class="btn-view-toggle" (click)="toggleViewMode()"
+            [title]="viewMode === 'list' ? 'Vista agrupada' : 'Vista lista'">
+            <lucide-icon [name]="viewMode === 'list' ? 'layout-grid' : 'list'" [size]="18"></lucide-icon>
+            {{ viewMode === 'list' ? 'Agrupar' : 'Lista' }}
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-bulk-pay btn btn-primary animate__animated animate__fadeIn" *ngIf="selectedInvoiceIds.size > 0"
+        (click)="onPaySelected()">
+        <lucide-icon name="credit-card" [size]="18" class="btn-icon"></lucide-icon>
+        Pagar Seleccionadas ({{ selectedInvoiceIds.size }})
+      </button>
+    </div>
+
+    <div class="table-wrapper" *ngIf="viewMode === 'list'">
       <table class="invoices-table" role="table" aria-label="Tabla de facturas">
         <thead>
           <tr>
+            <th scope="col" class="col-checkbox">
+              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)"
+                [disabled]="!hasPendingInvoices()" aria-label="Seleccionar todas las facturas pendientes">
+            </th>
             <th scope="col">Servicio</th>
             <th scope="col">Período</th>
+            <th scope="col">Vencimiento</th>
             <th scope="col">Monto</th>
             <th scope="col">Estado</th>
             <th scope="col">Acción</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let invoice of invoices">
+          <tr *ngFor="let invoice of paginatedInvoices; trackBy: trackByFn"
+            [class.selected]="selectedInvoiceIds.has(invoice.id)" [class.clickable]="isPending(invoice)"
+            (click)="onRowClick(invoice, $event)" (keydown.enter)="onRowClick(invoice, $event)" tabindex="0">
+            <td class="col-checkbox">
+              <input type="checkbox" *ngIf="isPending(invoice)" [checked]="selectedInvoiceIds.has(invoice.id)"
+                (click)="$event.stopPropagation(); toggleSelection(invoice, $event)"
+                [attr.aria-label]="'Seleccionar factura de ' + invoice.servicio">
+            </td>
             <td>{{ invoice.servicio }}</td>
             <td>{{ invoice.periodo }}</td>
+            <td>{{ formatDate(invoice.fechaVencimiento) }}</td>
             <td class="amount">{{ formatCurrency(invoice.monto) }}</td>
             <td>
-              <span class="estado-badge" [ngClass]="getEstadoClass(invoice.estado)"
-                [attr.aria-label]="'Estado: ' + invoice.estado">
-                {{ invoice.estado | titlecase }}
+              <span class="estado-badge" [ngClass]="getEstadoClass(invoice)"
+                [attr.aria-label]="'Estado: ' + (isOverdue(invoice) ? 'Vencida' : invoice.estado)">
+                <lucide-icon *ngIf="isOverdue(invoice)" name="alert-circle" [size]="14"
+                  class="overdue-icon-sutil"></lucide-icon>
+                {{ (isOverdue(invoice) ? 'Vencida' : invoice.estado) | titlecase }}
               </span>
             </td>
             <td>
               <button type="button" class="btn btn-pay" [disabled]="!isPending(invoice)" (click)="onPayClick(invoice)"
-                [attr.aria-label]="
-                  isPending(invoice)
-                    ? 'Pagar factura de ' + invoice.servicio
-                    : 'Factura ya pagada'
-                ">
+                [attr.aria-label]="'Pagar factura de ' + invoice.servicio">
                 Pagar
               </button>
             </td>
@@ -46,12 +97,77 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Grouped View (Also uses Paginated or just displayed? Grouped usually shows all, let's keep all for grouped for now or apply pagination to items? User asked for pagination in general. Applying to List View mainly) -->
+    <!-- Applying pagination to Grouped view is complex. Let's start with List View as it's the primary table -->
+    <div class="grouped-view" *ngIf="viewMode === 'grouped'">
+      <div class="service-group" *ngFor="let group of groupedInvoices; trackBy: trackByGroup">
+        <div class="group-header">
+          <!-- ... existing group header ... -->
+          <div class="group-title">
+            <lucide-icon name="package" [size]="20" class="group-icon"></lucide-icon>
+            <h4>{{ group.service }}</h4>
+            <span class="group-count">({{ group.invoices.length }})</span>
+          </div>
+          <div class="group-total">
+            Total: <strong>{{ formatCurrency(group.total) }}</strong>
+          </div>
+        </div>
+
+        <div class="group-invoices">
+          <div class="invoice-card" *ngFor="let invoice of group.invoices; trackBy: trackByFn"
+            [class.selected]="selectedInvoiceIds.has(invoice.id)" [class.clickable]="isPending(invoice)"
+            (click)="onRowClick(invoice, $event)" (keydown.enter)="onRowClick(invoice, $event)" tabindex="0">
+            <!-- ... existing card content ... -->
+            <div class="card-checkbox">
+              <input type="checkbox" [checked]="selectedInvoiceIds.has(invoice.id)" [disabled]="!isPending(invoice)"
+                (click)="$event.stopPropagation(); toggleSelection(invoice, $event)"
+                [attr.aria-label]="'Seleccionar factura de ' + invoice.servicio">
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <span class="card-period">{{ invoice.periodo }}</span>
+                <span class="estado-badge" [ngClass]="getEstadoClass(invoice)">
+                  <lucide-icon *ngIf="isOverdue(invoice)" name="alert-circle" [size]="14"
+                    class="overdue-icon-sutil"></lucide-icon>
+                  {{ (isOverdue(invoice) ? 'Vencida' : invoice.estado) | titlecase }}
+                </span>
+              </div>
+              <div class="card-date" *ngIf="invoice.fechaVencimiento">
+                <small class="text-muted">Vence: {{ formatDate(invoice.fechaVencimiento) }}</small>
+              </div>
+              <div class="card-footer">
+                <span class="card-amount">{{ formatCurrency(invoice.monto) }}</span>
+                <button type="button" class="btn btn-pay btn-sm" [disabled]="!isPending(invoice)"
+                  (click)="onPayClick(invoice)">
+                  Pagar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" *ngIf="totalPages > 1 && viewMode === 'list'">
+      <button class="btn-page" [disabled]="!canPrev" (click)="prevPage()">
+        <lucide-icon name="chevron-left" [size]="16"></lucide-icon>
+      </button>
+      <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button class="btn-page" [disabled]="!canNext" (click)="nextPage()">
+        <lucide-icon name="chevron-right" [size]="16"></lucide-icon>
+      </button>
+    </div>
+
   </div>
 
-  <div class="empty-state" *ngIf="!isLoading && !error && invoices.length === 0 && hasSearched" role="status"
+  <div class="empty-state" *ngIf="!isLoading && !error && displayedInvoices.length === 0 && hasSearched" role="status"
     aria-live="polite">
-    <div class="empty-state-icon">📄</div>
-    <h3>No hay facturas</h3>
-    <p>No se encontraron facturas para el cliente ingresado.</p>
+    <div class="empty-state-icon">
+      <lucide-icon name="inbox" [size]="64" class="empty-icon"></lucide-icon>
+    </div>
+    <h3>No se encontraron facturas</h3>
+    <p>Intenta ajustar los filtros de búsqueda.</p>
   </div>
 </div>

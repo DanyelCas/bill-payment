@@ -2,11 +2,11 @@
   <header class="app-header" *ngIf="authService.isAuthenticated()">
     <div class="header-content">
       <div class="brand">
-        <h1>{{ title }}</h1>
-        <p class="subtitle">Sistema de Pago de Servicios</p>
+        <!-- Replaced title with Greeting as requested -->
+        <h1 *ngIf="authService.getCurrentUser() as user">Hola, {{ user.name }}</h1>
+        <p class="subtitle">Bienvenido a tu Banca en Línea</p>
       </div>
       <div class="user-info" *ngIf="authService.getCurrentUser() as user">
-        <span class="user-name">Sesión: {{ user.name }}</span>
         <button class="btn-logout" (click)="onLogout()">
           Cerrar sesión
         </button>
