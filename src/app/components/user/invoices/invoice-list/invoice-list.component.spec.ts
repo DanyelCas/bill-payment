@@ -3,11 +3,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { InvoiceListComponent } from './invoice-list.component';
-import { InvoiceService } from '../../services/invoice.service';
+import { InvoiceService } from '../../../../services/invoice.service';
 import { InvoiceSearchComponent } from '../invoice-search/invoice-search.component';
 import { InvoiceTableComponent } from '../invoice-table/invoice-table.component';
 import { InvoicePaymentComponent } from '../invoice-payment/invoice-payment.component';
-import { Invoice } from '../../models/invoice.model';
+import { Invoice } from '../../../../models/invoice.model';
 
 describe('InvoiceListComponent', () => {
   let component: InvoiceListComponent;

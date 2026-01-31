@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { InvoiceService } from '../../services/invoice.service';
-import { Invoice } from '../../models/invoice.model';
-import { AuthService } from '../../services/auth.service';
-import { InvoiceEventsService } from '../../services/invoice-events.service';
+import { InvoiceService } from '../../../../services/invoice.service';
+import { Invoice } from '../../../../models/invoice.model';
+import { AuthService } from '../../../../services/auth.service';
+import { InvoiceEventsService } from '../../../../services/invoice-events.service';
 import { InvoiceTableComponent } from '../invoice-table/invoice-table.component';
-import { ReceiptService } from '../../services/receipt.service';
+import { ReceiptService } from '../../../../services/receipt.service';
 import Swal from 'sweetalert2';
 
 @Component({

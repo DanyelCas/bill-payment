@@ -73,7 +73,7 @@
       "periodo": "Enero 2026",
       "monto": 1250.9,
       "fechaVencimiento": "2026-02-10",
-      "estado": "pendiente"
+      "estado": "pagado"
     },
     {
       "id": 8,
@@ -118,7 +118,7 @@
       "periodo": "Febrero 2026",
       "monto": 1100,
       "fechaVencimiento": "2026-03-10",
-      "estado": "pendiente"
+      "estado": "pagado"
     },
     {
       "id": 13,
@@ -210,6 +210,28 @@
         }
       ],
       "totalAmount": 890.8,
+      "paymentMethod": "QR / Transferencia"
+    },
+    {
+      "id": "REC-183588-945",
+      "timestamp": "2026-01-31T01:49:43.588Z",
+      "userId": "100001",
+      "customerName": "Juan Perez",
+      "items": [
+        {
+          "invoiceId": 7,
+          "servicio": "Electricidad",
+          "periodo": "Enero 2026",
+          "monto": 1250.9
+        },
+        {
+          "invoiceId": 12,
+          "servicio": "Electricidad",
+          "periodo": "Febrero 2026",
+          "monto": 1100
+        }
+      ],
+      "totalAmount": 2350.9,
       "paymentMethod": "QR / Transferencia"
     }
   ]

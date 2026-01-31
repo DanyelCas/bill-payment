@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { DashboardService, DashboardStats } from '../../services/dashboard.service';
-import { InvoiceEventsService } from '../../services/invoice-events.service';
-import { User } from '../../models/user.model';
+import { AuthService } from '../../../services/auth.service';
+import { DashboardService, DashboardStats } from '../../../services/dashboard.service';
+import { InvoiceEventsService } from '../../../services/invoice-events.service';
+import { User } from '../../../models/user.model';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 

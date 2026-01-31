@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Invoice } from '../../../models/invoice.model';
+import { Invoice } from '../../../../models/invoice.model';
 
 @Component({
   selector: 'app-upcoming-dues-widget',

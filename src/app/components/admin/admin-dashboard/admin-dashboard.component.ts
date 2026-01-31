@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
-    selector: 'app-admin-dashboard',
-    template: `
+  selector: 'app-admin-dashboard',
+  template: `
     <div class="dashboard-container">
       <header>
         <h1>Panel de Administración</h1>
@@ -18,7 +18,7 @@ import { AuthService } from '../../services/auth.service';
       </main>
     </div>
   `,
-    styles: [`
+  styles: [`
     .dashboard-container {
       padding: 2rem;
       header {
@@ -51,9 +51,9 @@ import { AuthService } from '../../services/auth.service';
   `]
 })
 export class AdminDashboardComponent {
-    constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) { }
 
-    logout(): void {
-        this.authService.logout();
-    }
+  logout(): void {
+    this.authService.logout();
+  }
 }

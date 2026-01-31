@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { Invoice } from '../../models/invoice.model';
+import { Invoice } from '../../../../models/invoice.model';
 import Swal from 'sweetalert2';
 
 @Component({

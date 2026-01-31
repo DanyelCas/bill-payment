@@ -1,14 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+// Auth
+import { LoginComponent } from './components/auth/login/login.component';
+
+// User
+import { DashboardComponent } from './components/user/dashboard/dashboard.component';
+import { InvoiceListComponent } from './components/user/invoices/invoice-list/invoice-list.component';
+
+// Admin
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+
+// Guards
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { guestGuard } from './guards/guest.guard';
 import { UserRole } from './models/user.model';
-
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

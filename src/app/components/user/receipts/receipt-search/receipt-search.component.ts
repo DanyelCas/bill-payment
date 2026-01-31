@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ReceiptService } from '../../services/receipt.service';
-import { Receipt } from '../../models/receipt.model';
+import { ReceiptService } from '../../../../services/receipt.service';
+import { Receipt } from '../../../../models/receipt.model';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
 
