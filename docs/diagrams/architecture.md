@@ -10,27 +10,27 @@ graph TD
     classDef backend fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
     classDef db fill:#eee,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5;
 
-    subgraph Client [Cliente (SPA Angular)]
+    subgraph Client ["Cliente (SPA Angular)"]
         direction TB
         
-        subgraph Modules [Módulos Funcionales]
+        subgraph Modules ["Módulos Funcionales"]
             direction TB
-            AuthMod[Auth Module]:::module
-            UserMod[User Module]:::module
-            AdminMod[Admin Module]:::module
+            AuthMod["Auth Module"]:::module
+            UserMod["User Module"]:::module
+            AdminMod["Admin Module"]:::module
         end
 
-        subgraph Services [Capa de Servicios & Core]
-            AuthServ[AuthService]:::service
-            InvServ[InvoiceService]:::service
-            UserServ[UserService]:::service
-            ReceiptServ[ReceiptService]:::service
+        subgraph Services ["Capa de Servicios & Core"]
+            AuthServ["AuthService"]:::service
+            InvServ["InvoiceService"]:::service
+            UserServ["UserService"]:::service
+            ReceiptServ["ReceiptService"]:::service
         end
     end
 
-    subgraph Server [Servidor (Simulado)]
-        JSONServer[JSON Server API]:::backend
-        DB[(db.json)]:::db
+    subgraph Server ["Servidor (Simulado)"]
+        JSONServer["JSON Server API"]:::backend
+        DB[("db.json")]:::db
     end
 
     %% Relaciones entre Módulos y Servicios
