@@ -2,13 +2,13 @@
   "users": [
     {
       "id": "100001",
-      "name": "Daniel Castillo",
-      "email": "daniel.castillo@example.com"
+      "name": "Juan Perez",
+      "email": "juan.perez@example.com"
     },
     {
       "id": "100002",
-      "name": "Maria Rodriguez",
-      "email": "maria.rodriguez@example.com"
+      "name": "Juan Perez",
+      "email": "juan.perez.2@example.com"
     }
   ],
   "invoices": [
@@ -46,7 +46,7 @@
       "periodo": "Diciembre 2025",
       "monto": 1010.3,
       "fechaVencimiento": "2026-01-10",
-      "estado": "pendiente"
+      "estado": "pagado"
     },
     {
       "id": 5,
@@ -55,7 +55,7 @@
       "periodo": "Diciembre 2025",
       "monto": 340.8,
       "fechaVencimiento": "2026-01-15",
-      "estado": "pendiente"
+      "estado": "pagado"
     },
     {
       "id": 6,
@@ -64,7 +64,7 @@
       "periodo": "Diciembre 2025",
       "monto": 550,
       "fechaVencimiento": "2026-01-05",
-      "estado": "pendiente"
+      "estado": "pagado"
     },
     {
       "id": 7,
@@ -174,6 +174,42 @@
         }
       ],
       "totalAmount": 550,
+      "paymentMethod": "QR / Transferencia"
+    },
+    {
+      "id": "REC-383415-619",
+      "timestamp": "2026-01-30T23:39:43.415Z",
+      "userId": "100001",
+      "items": [
+        {
+          "invoiceId": 4,
+          "servicio": "Electricidad",
+          "periodo": "Diciembre 2025",
+          "monto": 1010.3
+        }
+      ],
+      "totalAmount": 1010.3,
+      "paymentMethod": "QR / Transferencia"
+    },
+    {
+      "id": "REC-102862-295",
+      "timestamp": "2026-01-30T23:51:42.862Z",
+      "userId": "100001",
+      "items": [
+        {
+          "invoiceId": 5,
+          "servicio": "Agua",
+          "periodo": "Diciembre 2025",
+          "monto": 340.8
+        },
+        {
+          "invoiceId": 6,
+          "servicio": "Internet",
+          "periodo": "Diciembre 2025",
+          "monto": 550
+        }
+      ],
+      "totalAmount": 890.8,
       "paymentMethod": "QR / Transferencia"
     }
   ]

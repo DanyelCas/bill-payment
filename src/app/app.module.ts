@@ -20,7 +20,9 @@ import { AverageSpendWidgetComponent } from './components/dashboard/widgets/aver
 import { SpendChartComponent } from './components/dashboard/charts/spend-chart.component';
 import { InvoiceStatusChartComponent } from './components/dashboard/charts/invoice-status-chart.component';
 import { MultiSelectDropdownComponent } from './components/ui/multi-select-dropdown/multi-select-dropdown.component';
-import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie } from 'lucide-angular';
+import { TabsComponent } from './components/ui/tabs/tabs.component';
+import { ReceiptSearchComponent } from './components/receipt-search/receipt-search.component';
+import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search } from 'lucide-angular';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingU
     SpendChartComponent,
     SpendChartComponent,
     InvoiceStatusChartComponent,
-    MultiSelectDropdownComponent
+    MultiSelectDropdownComponent,
+    TabsComponent,
+    ReceiptSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,7 @@ import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingU
     ReactiveFormsModule,
     HttpClientModule,
     NgxChartsModule,
-    LucideAngularModule.pick({ CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie })
+    LucideAngularModule.pick({ CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search })
   ],
   providers: [],
   bootstrap: [AppComponent],

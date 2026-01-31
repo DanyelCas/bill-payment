@@ -4,23 +4,26 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { InvoiceService } from './invoice.service';
 
+export interface ChartData {
+    name: string;
+    value: number;
+}
+
 export interface DashboardStats {
     totalPending: number;
-    upcomingDues: Invoice[];
+    upcomingDues: Invoice[]; // Mapped to upcomingInvoices in component
+    upcomingInvoices: Invoice[]; // Alias for upcomingDues to match template expectations
     monthlySavings: number;
     averageSpend: number;
-    monthlySpendData: { month: string; amount: number }[];
+    monthlySpendData: { month: string; amount: number }[]; // For Average Spend Widget
     savingsDetails?: {
         currentMonth: string;
         prevMonth: string;
         currentAmount: number;
         prevAmount: number;
     };
-}
-
-export interface ChartData {
-    name: string;
-    value: number;
+    categoryData: ChartData[]; // For Spend Chart
+    statusData: ChartData[];   // For Status Chart
 }
 
 @Injectable({
@@ -54,21 +57,17 @@ export class DashboardService {
         return this.invoiceService.getInvoices(customerId).pipe(
             map(invoices => {
                 const pending = invoices.filter(i => i.estado === 'pendiente');
-                const paid = invoices.filter(i => i.estado === 'pagado');
 
                 // Total Pending
                 const totalPending = pending.reduce((acc, curr) => acc + curr.monto, 0);
 
-                // Upcoming Dues: All invoices due in the same month as the next due
+                // Upcoming Dues
                 const sortedPending = pending.sort((a, b) =>
                     this.parsePeriodo(a.periodo).getTime() - this.parsePeriodo(b.periodo).getTime()
                 );
+                const upcomingDues = sortedPending;
 
-                // Upcoming Dues: Return ALL pending invoices sorted by date
-                // The widget handles proper counting of overdue vs upcoming
-                let upcomingDues: Invoice[] = sortedPending;
-
-                // Group ALL Invoices by Month for Average Monthly Spend (not just paid)
+                // --- Average Spend Calculation ---
                 const allByMonth: { [key: string]: number } = {};
                 invoices.forEach(inv => {
                     const date = this.parsePeriodo(inv.periodo);
@@ -80,48 +79,28 @@ export class DashboardService {
                 const allMonthKeys = Object.keys(allByMonth).sort((a, b) => {
                     const [yA, mA] = a.split('-').map(Number);
                     const [yB, mB] = b.split('-').map(Number);
-                    return new Date(yB, mB).getTime() - new Date(yA, mA).getTime(); // Descending
+                    return new Date(yB, mB).getTime() - new Date(yA, mA).getTime();
                 });
 
                 const averageSpend = allMonthKeys.length > 0
                     ? allMonthKeys.reduce((acc, key) => acc + allByMonth[key], 0) / allMonthKeys.length
                     : 0;
 
-                // Get last 3 months for detailed view
                 const last3Months = allMonthKeys.slice(0, 3).map(key => ({
                     month: this.getKeyName(key),
                     amount: allByMonth[key]
                 }));
 
-                // Savings Calculation (Current Month vs Previous Month)
-                // Group by YYYY-MM key
-                const byMonth: { [key: string]: number } = {};
-                invoices.forEach(inv => {
-                    const date = this.parsePeriodo(inv.periodo);
-                    const key = `${date.getFullYear()}-${date.getMonth()}`;
-                    if (!byMonth[key]) byMonth[key] = 0;
-                    byMonth[key] += inv.monto;
-                });
-
-                // Get latest 2 months
-                const sortedKeys = Object.keys(byMonth).sort((a, b) => {
-                    const [yA, mA] = a.split('-').map(Number);
-                    const [yB, mB] = b.split('-').map(Number);
-                    return new Date(yB, mB).getTime() - new Date(yA, mA).getTime(); // Descending
-                });
-
+                // --- Savings Calculation ---
                 let monthlySavings = 0;
                 let savingsDetails = undefined;
 
-                if (sortedKeys.length >= 2) {
-                    const currentKey = sortedKeys[0];
-                    const prevKey = sortedKeys[1];
-
-                    const currentAmount = byMonth[currentKey];
-                    const prevAmount = byMonth[prevKey];
-
+                if (allMonthKeys.length >= 2) {
+                    const currentKey = allMonthKeys[0];
+                    const prevKey = allMonthKeys[1];
+                    const currentAmount = allByMonth[currentKey];
+                    const prevAmount = allByMonth[prevKey];
                     monthlySavings = prevAmount - currentAmount;
-
                     savingsDetails = {
                         currentMonth: this.getKeyName(currentKey),
                         prevMonth: this.getKeyName(prevKey),
@@ -130,13 +109,60 @@ export class DashboardService {
                     };
                 }
 
+                // --- Category Data (Spend by Service) ---
+                const groupedByService: { [key: string]: number } = {};
+                invoices.forEach(inv => {
+                    if (!groupedByService[inv.servicio]) groupedByService[inv.servicio] = 0;
+                    groupedByService[inv.servicio] += inv.monto;
+                });
+                const categoryData = Object.keys(groupedByService).map(key => ({
+                    name: key,
+                    value: Number.parseFloat(groupedByService[key].toFixed(2))
+                }));
+
+                // --- Status Data ---
+                let paid = 0;
+                let pendingAmt = 0;
+                let overdueAmt = 0;
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                invoices.forEach(inv => {
+                    if (inv.estado === 'pagado') {
+                        paid += inv.monto;
+                    } else { // 'pendiente' or 'vencida' logic
+                        // Check if overdue
+                        let isOverdue = false;
+                        if (inv.fechaVencimiento) {
+                            const dateParts = inv.fechaVencimiento.split('-');
+                            if (dateParts.length === 3) {
+                                const dueDateObj = new Date(inv.fechaVencimiento + 'T00:00:00');
+                                if (dueDateObj < today) isOverdue = true;
+                            }
+                        }
+
+                        if (isOverdue) overdueAmt += inv.monto;
+                        else pendingAmt += inv.monto;
+                    }
+                });
+
+                const statusData = [
+                    { name: 'Pagado', value: paid },
+                    { name: 'Pendiente', value: pendingAmt },
+                    { name: 'Vencida', value: overdueAmt }
+                ].filter(d => d.value > 0);
+
+
                 return {
                     totalPending,
                     upcomingDues,
-                    monthlySavings, // If positive, you saved money. If negative, you spent more.
+                    upcomingInvoices: upcomingDues, // Alias
+                    monthlySavings,
                     averageSpend,
                     monthlySpendData: last3Months,
-                    savingsDetails
+                    savingsDetails,
+                    categoryData,
+                    statusData
                 };
             })
         );

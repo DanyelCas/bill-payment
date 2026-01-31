@@ -1,61 +1,59 @@
 <div class="dashboard-container">
-    <!-- Compact Header & Welcome -->
-    <!-- KPI Widgets Row -->
-    <div class="widgets-grid" *ngIf="stats">
-        <app-summary-widget title="Total Pendiente" [value]="'Bs. ' + (stats.totalPending | number:'1.2-2')"
-            icon="circle-alert" color="orange">
-        </app-summary-widget>
 
-        <app-upcoming-dues-widget [invoices]="stats.upcomingDues">
-        </app-upcoming-dues-widget>
-
-        <app-average-spend-widget [averageAmount]="stats.averageSpend" [monthlyData]="stats.monthlySpendData">
-        </app-average-spend-widget>
-
-        <app-summary-widget
-            [title]="stats.savingsDetails ? 'Ahorro (' + getSavingsMonthsShort(stats.savingsDetails) + ')' : 'Ahorro Mensual'"
-            [value]="'Bs. ' + (stats.monthlySavings | number:'1.2-2')"
-            [subtext]="stats.savingsDetails ? 'Bs. ' + (stats.savingsDetails.currentAmount | number:'1.2-2') + ' vs Bs. ' + (stats.savingsDetails.prevAmount | number:'1.2-2') : null"
-            icon="piggy-bank" [color]="stats.monthlySavings >= 0 ? 'green' : 'orange'">
-        </app-summary-widget>
+    <div class="loading-overlay" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Cargando información...</p>
     </div>
 
-    <!-- Main Content Grid (Table + Chart Side-by-Side) -->
-    <div class="main-content-grid">
-        <!-- Invoices Section (Left) -->
-        <section class="invoices-section">
-            <div class="section-header">
-                <h3>
-                    <lucide-icon name="receipt" [size]="20" class="section-icon"></lucide-icon>
-                    Tus Facturas
-                </h3>
-            </div>
+    <div class="dashboard-content" *ngIf="!loading && stats">
+
+        <!-- Top Widgets Section (Always Visible) -->
+        <div class="widgets-grid animate__animated animate__fadeInDown">
+            <app-summary-widget title="Total Pendiente" [value]="'Bs. ' + (stats.totalPending | number:'1.2-2')"
+                icon="circle-alert" color="orange">
+            </app-summary-widget>
+
+            <app-upcoming-dues-widget [invoices]="stats.upcomingInvoices">
+            </app-upcoming-dues-widget>
+
+            <app-average-spend-widget [averageAmount]="stats.averageSpend" [monthlyData]="stats.monthlySpendData">
+            </app-average-spend-widget>
+
+            <app-summary-widget
+                [title]="stats.savingsDetails ? 'Ahorro (' + getSavingsMonthsShort(stats.savingsDetails) + ')' : 'Ahorro Mensual'"
+                [value]="'Bs. ' + (stats.monthlySavings | number:'1.2-2')"
+                [subtext]="stats.savingsDetails ? 'Bs. ' + (stats.savingsDetails.currentAmount | number:'1.2-2') + ' vs Bs. ' + (stats.savingsDetails.prevAmount | number:'1.2-2') : null"
+                icon="piggy-bank" [color]="stats.monthlySavings >= 0 ? 'green' : 'orange'">
+            </app-summary-widget>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <app-tabs [tabs]="tabs" [activeTab]="activeTab" (activeTabChange)="onTabChange($event)">
+        </app-tabs>
+
+        <!-- Tab Content: Invoices -->
+        <div class="tab-content animate__animated animate__fadeIn" *ngIf="activeTab === 'invoices'">
             <app-invoice-list></app-invoice-list>
-        </section>
+        </div>
 
-        <!-- Charts Section (Right) -->
-        <section class="charts-section">
-            <div class="chart-block">
-                <div class="section-header">
-                    <h3>
-                        <lucide-icon name="chart-column" [size]="20" class="section-icon"></lucide-icon>
-                        Distribución de Gastos
-                    </h3>
+        <!-- Tab Content: Stats -->
+        <div class="tab-content animate__animated animate__fadeIn" *ngIf="activeTab === 'stats'">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Distribución de Gastos</h3>
+                    <app-spend-chart [data]="stats.categoryData"></app-spend-chart>
                 </div>
-                <app-spend-chart></app-spend-chart>
-            </div>
-
-            <div class="chart-divider"></div>
-
-            <div class="chart-block">
-                <div class="section-header">
-                    <h3>
-                        <lucide-icon name="chart-pie" [size]="20" class="section-icon"></lucide-icon>
-                        Estado de Cuentas
-                    </h3>
+                <div class="chart-card">
+                    <h3>Estado de Facturas</h3>
+                    <app-invoice-status-chart [data]="stats.statusData"></app-invoice-status-chart>
                 </div>
-                <app-invoice-status-chart></app-invoice-status-chart>
             </div>
-        </section>
+        </div>
+
+        <!-- Tab Content: Receipt Search -->
+        <div class="tab-content animate__animated animate__fadeIn" *ngIf="activeTab === 'search'">
+            <app-receipt-search></app-receipt-search>
+        </div>
+
     </div>
 </div>

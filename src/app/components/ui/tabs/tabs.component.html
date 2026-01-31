@@ -1,0 +1,13 @@
+<div class="tabs-container">
+    <div class="tabs-header">
+        <button *ngFor="let tab of tabs" class="tab-item" [class.active]="activeTab === tab.id"
+            (click)="selectTab(tab.id)">
+            <div class="tab-content">
+                <lucide-icon *ngIf="tab.icon" [name]="tab.icon" [size]="18" class="tab-icon"></lucide-icon>
+                <span class="tab-label">{{ tab.label }}</span>
+            </div>
+            <!-- Animated Active Indicator -->
+            <div class="active-indicator" *ngIf="activeTab === tab.id"></div>
+        </button>
+    </div>
+</div>

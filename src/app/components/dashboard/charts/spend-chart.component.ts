@@ -1,6 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
-import { DashboardService } from '../../../services/dashboard.service';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
@@ -54,8 +52,9 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
     }
     .header-controls {
       display: flex;
-      justify-content: flex-end; /* Align toggles to right */
+      justify-content: flex-end;
       margin-bottom: 0.5rem;
+      flex-shrink: 0;
     }
     .toggles {
       background: #f7fafc;
@@ -84,19 +83,18 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
     }
     .chart-wrapper {
       flex: 1;
-      min-height: 0; /* Changed from 300px to 0 to allow shrinking */
-      overflow: hidden; /* Important for auto-resize */
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
     }
   `]
 })
 export class SpendChartComponent implements OnInit {
   viewMode: 'bar' | 'line' = 'bar';
 
-  // Data
-  data: any[] = [];
+  @Input() data: any[] = [];
   lineData: any[] = [];
 
-  // Options
   colorScheme: Color = {
     name: 'custom',
     selectable: true,
@@ -104,29 +102,7 @@ export class SpendChartComponent implements OnInit {
     domain: ['#4299e1', '#48BB78', '#ED8936', '#E53E3E']
   };
 
-  constructor(
-    private dashboardService: DashboardService,
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) { }
-
   ngOnInit(): void {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      this.dashboardService.getSpendByService(user.id).subscribe(data => {
-        this.data = data;
-      });
-
-      this.dashboardService.getTrendData(user.id).subscribe(data => {
-        this.lineData = data;
-      });
-    }
-  }
-
-  // Force chart resize on window resize
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    // Force Angular to detect changes
-    this.cdr.detectChanges();
+    // Data is passed from parent
   }
 }

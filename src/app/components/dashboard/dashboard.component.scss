@@ -71,13 +71,64 @@
             }
         }
     }
+
+
+    // Tabs Content Styles
+    .tab-content {
+        margin-top: 1.5rem;
+    }
+
+    // Charts Grid (Stats Tab)
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 1.5rem;
+        align-items: stretch;
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            min-height: 400px;
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+                margin: 0 0 1rem 0;
+                font-size: 1.1rem;
+                color: var(--color-gray-700);
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+
+            app-spend-chart,
+            app-invoice-status-chart {
+                flex: 1;
+                min-height: 0;
+                display: block;
+                overflow: hidden;
+            }
+        }
+    }
+
+    // Main Content Side-by-Side (OLD - Keeping for backward compat if needed, but Tabs replace this)
+    .main-content-grid {
+        // ... (styles kept if necessary, but we are using tabs now)
+        display: none; // Hiding old grid if it still exists in DOM
+    }
 }
 
-// Responsiveness - Break earlier for better experience
+// Responsiveness
 @media (max-width: 1200px) {
     .dashboard-container {
-        .main-content-grid {
-            grid-template-columns: 1fr; // Stack on smaller laptops/tablets
+        .charts-grid {
+            grid-template-columns: 1fr;
+
+            .chart-card {
+                max-height: 450px;
+            }
         }
     }
 }
@@ -87,7 +138,16 @@
         padding: 1rem;
 
         .widgets-grid {
-            grid-template-columns: 1fr 1fr; // 2x2 on mobile
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .charts-grid {
+            grid-template-columns: 1fr;
+
+            .chart-card {
+                min-height: 350px;
+                max-height: 400px;
+            }
         }
     }
 }
@@ -95,7 +155,7 @@
 @media (max-width: 480px) {
     .dashboard-container {
         .widgets-grid {
-            grid-template-columns: 1fr; // 1 column on very small screens
+            grid-template-columns: 1fr;
         }
     }
 }

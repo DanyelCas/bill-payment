@@ -1,0 +1,70 @@
+<div class="receipt-search-container animate__animated animate__fadeIn">
+    <div class="search-box">
+        <h3>Consulta de Comprobantes</h3>
+        <p class="subtitle">Ingresa el código de tu comprobante (ej. REC-892345-001) para verificar su estado y
+            descargarlo.</p>
+
+        <div class="input-group">
+            <lucide-icon name="search" [size]="20" class="search-icon"></lucide-icon>
+            <input type="text" [(ngModel)]="searchId" (keydown.enter)="onSearch()"
+                placeholder="Código de comprobante..." [disabled]="isLoading">
+            <button class="btn" [class.btn-disabled]="!searchId || isLoading" (click)="onSearch()"
+                [disabled]="!searchId || isLoading">
+                <span *ngIf="!isLoading">Buscar</span>
+                <div class="spinner-mini" *ngIf="isLoading"></div>
+            </button>
+        </div>
+    </div>
+
+    <div class="search-result" *ngIf="!isLoading && hasSearched">
+        <!-- Success State -->
+        <div class="receipt-card animate__animated animate__zoomIn" *ngIf="foundReceipt">
+            <div class="card-header">
+                <div class="status-indicator">
+                    <lucide-icon name="circle-check" [size]="24" class="success-icon"></lucide-icon>
+                    <div>
+                        <h4>Pago Confirmado</h4>
+                        <span class="timestamp">{{ formatDate(foundReceipt.timestamp) }}</span>
+                    </div>
+                </div>
+                <div class="receipt-id">{{ foundReceipt.id }}</div>
+            </div>
+
+            <div class="card-body">
+                <div class="detail-row">
+                    <span>Método de Pago</span>
+                    <strong>{{ foundReceipt.paymentMethod }}</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Servicios Pagados</span>
+                    <strong>{{ foundReceipt.items.length }} facturas</strong>
+                </div>
+                <div class="items-list">
+                    <div class="item" *ngFor="let item of foundReceipt.items">
+                        <span>{{ item.servicio }} ({{ item.periodo }})</span>
+                        <span>{{ formatCurrency(item.monto) }}</span>
+                    </div>
+                </div>
+                <div class="total-row">
+                    <span>Total Pagado</span>
+                    <span class="total-amount">{{ formatCurrency(foundReceipt.totalAmount) }}</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn" (click)="downloadPDF()">
+                    <lucide-icon name="file-text" [size]="18"></lucide-icon>
+                    Descargar PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="not-found animate__animated animate__fadeIn" *ngIf="!foundReceipt">
+            <lucide-icon name="circle-alert" [size]="48" class="not-found-icon"></lucide-icon>
+            <h4>Comprobante no encontrado</h4>
+            <p>No pudimos encontrar un pago con el código <strong>{{ searchId }}</strong>. Por favor verifica e intenta
+                nuevamente.</p>
+        </div>
+    </div>
+</div>

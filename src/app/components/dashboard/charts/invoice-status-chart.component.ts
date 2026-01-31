@@ -1,6 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
-import { DashboardService } from '../../../services/dashboard.service';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
@@ -30,13 +28,15 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
   styles: [`
     .chart-container {
       height: 100%;
-      min-height: 0; /* Changed from 300px to 0 */
+      min-height: 0;
       display: flex;
       flex-direction: column;
     }
     .chart-wrapper {
       flex: 1;
+      min-height: 0;
       overflow: hidden;
+      position: relative;
     }
     .no-data {
       height: 100%;
@@ -48,42 +48,30 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
     }
   `]
 })
-export class InvoiceStatusChartComponent implements OnInit {
-  data: any[] = [];
+export class InvoiceStatusChartComponent implements OnInit, OnChanges {
+  @Input() data: any[] = [];
 
-  // Color Scheme: Green (Paid), Orange (Pending), Red (Overdue)
   colorScheme: Color = {
     name: 'status',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#48BB78', '#ED8936', '#E53E3E'] // Green, Orange, Red
+    domain: ['#48BB78', '#ED8936', '#E53E3E']
   };
 
-  constructor(
-    private dashboardService: DashboardService,
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) { }
-
   ngOnInit(): void {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      this.dashboardService.getInvoiceStatusDistribution(user.id).subscribe(data => {
-        this.data = this.sortData(data);
-      });
+    if (this.data && this.data.length > 0) {
+      this.data = this.sortData(this.data);
     }
   }
 
-  // Ensure consistent order: Pagado, Pendiente, Vencida
+  ngOnChanges(): void {
+    if (this.data && this.data.length > 0) {
+      this.data = this.sortData(this.data);
+    }
+  }
+
   private sortData(data: any[]): any[] {
     const order = ['Pagado', 'Pendiente', 'Vencida'];
     return data.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
-  }
-
-  // Force chart resize on window resize
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    // Force Angular to detect changes
-    this.cdr.detectChanges();
   }
 }

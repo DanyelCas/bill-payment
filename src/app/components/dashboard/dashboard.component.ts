@@ -15,6 +15,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     stats: DashboardStats | null = null;
     loading = true;
     user: User | null = null;
+    activeTab = 'invoices'; // Default tab
+
+    tabs = [
+        { id: 'invoices', label: 'Tus Facturas', icon: 'file-text' },
+        { id: 'stats', label: 'Estadísticas', icon: 'chart-pie' },
+        { id: 'search', label: 'Consultar Pagos', icon: 'search' }
+    ];
+
     private paymentSubscription?: Subscription;
 
     constructor(
@@ -54,8 +62,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     getSavingsMonthsShort(details: any): string {
         // Extract short month names: "Enero 2024" -> "Ene", "Febrero 2024" -> "Feb"
+        if (!details) return '';
         const currentShort = details.currentMonth.split(' ')[0].substring(0, 3);
         const prevShort = details.prevMonth.split(' ')[0].substring(0, 3);
         return `${prevShort} vs ${currentShort}`;
+    }
+
+    onTabChange(tabId: string): void {
+        this.activeTab = tabId;
     }
 }

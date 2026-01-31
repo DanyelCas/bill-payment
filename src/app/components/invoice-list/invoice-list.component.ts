@@ -25,7 +25,9 @@ export class InvoiceListComponent implements OnInit {
   isProcessingPayment = false;
   paymentSuccess = false;
   paymentError: string | null = null;
+  // ...
   currentCustomerId: string | null = null;
+  currentCustomerName: string = 'Cliente'; // Default
 
   constructor(
     private invoiceService: InvoiceService,
@@ -38,6 +40,8 @@ export class InvoiceListComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     if (user) {
       this.currentCustomerId = user.id;
+      // Ideally AuthService returns the name, if not we assume it from the ID or mock
+      this.currentCustomerName = user.name || 'Juan Perez';
       this.loadInvoices(user.id);
     }
   }
@@ -124,11 +128,14 @@ export class InvoiceListComponent implements OnInit {
           this.invoiceTable.clearSelection();
         }
 
-        // Crear recibo
+        // Crear comprobante
         const userId = this.currentCustomerId || 'UNKNOWN';
+        const customerName = this.currentCustomerName;
+
         this.receiptService.createReceipt(
           updatedInvoices,
           userId,
+          customerName,
           'QR / Transferencia'
         ).subscribe({
           next: (receipt) => {
@@ -140,16 +147,16 @@ export class InvoiceListComponent implements OnInit {
               html: `
                 <p>Se han procesado ${updatedInvoices.length} factura(s) correctamente.</p>
                 <div style="margin-top: 15px; font-size: 0.9em; color: #555;">
-                  Código de Recibo: <strong>${receipt.id}</strong>
+                  Código de Comprobante: <strong>${receipt.id}</strong>
                 </div>
               `,
               icon: 'success',
               showCancelButton: true,
-              confirmButtonText: 'Descargar Recibo',
+              confirmButtonText: 'Descargar Comprobante',
               cancelButtonText: 'Cerrar',
               customClass: {
                 confirmButton: 'swal2-confirm-success',
-                cancelButton: 'swal2-cancel-gray' // Need to ensure this class exists or use default
+                cancelButton: 'swal2-cancel-gray'
               }
             }).then((result) => {
               if (result.isConfirmed) {
@@ -159,11 +166,11 @@ export class InvoiceListComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error creating receipt:', err);
-            // Aun si falla el recibo, el pago fue exitoso
+            // Aun si falla el comprobante, el pago fue exitoso
             this.onClosePaymentModal();
             Swal.fire({
               title: '¡Pago Exitoso!',
-              text: `Se han procesado ${updatedInvoices.length} factura(s), pero hubo un error generando el recibo.`,
+              text: `Se han procesado ${updatedInvoices.length} factura(s), pero hubo un error generando el comprobante.`,
               icon: 'warning',
               confirmButtonText: 'Aceptar',
               customClass: {
