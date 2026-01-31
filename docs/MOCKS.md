@@ -11,18 +11,22 @@ El proyecto utiliza **JSON Server** para simular una API REST completa y persist
 
 ## 📡 Endpoints Disponibles
 
-- `GET /invoices?customerId={id}` - Obtener facturas por ID de cliente
-- `GET /invoices` - Obtener todas las facturas
-- `PATCH /invoices/{id}` - Actualizar estado de factura (usado para pagos)
+- `GET /users` - Lista de usuarios
+- `GET /invoices` - Todas las facturas (Admin)
+- `GET /invoices?customerId={id}` - Facturas por cliente (User)
+- `POST /invoices` - Crear factura
+- `PUT /invoices/{id}` - Modificar factura / Pagar
+- `DELETE /invoices/{id}` - Eliminar factura
+- `POST /receipts` - Registrar comprobante de pago
 
 ## 📊 Datos de Ejemplo
 
-El archivo `src/mocks/db.json` incluye diversos escenarios de prueba:
+El archivo `src/mocks/db.json` incluye los siguientes perfiles para pruebas:
 
-### Casos de Prueba Recomendados:
-- **Cliente `100001`**: Historial limpio (todas las facturas pagadas).
-- **Cliente `100010`**: Facturas mixtas (Pendientes y Vencidas).
-- **Cliente `200014`**: Facturas con montos altos para pruebas de UI.
+### Casos de Prueba:
+- **Cliente `100001`**: Usuario "Juan Perez" con múltiples facturas pendientes y pagadas.
+- **Cliente `100002`**: Usuario con deudas de servicios de gas domiciliario.
+- **Admin**: Acceso mediante login especial (ver [AUTH.md](AUTH.md)).
 
 ## 🛠️ Solución de Problemas
 

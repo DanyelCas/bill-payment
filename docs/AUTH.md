@@ -4,12 +4,12 @@ Sistema de acceso profesional con roles diferenciados para la gestión de factur
 
 ## 👥 Roles de Usuario
 
-El sistema cuenta con dos niveles de acceso:
+El sistema cuenta con dos niveles de acceso segregados:
 
-| Rol | Alcance | Destino |
+| Rol | Alcance | Destino tras Login |
 |-----|---------|---------|
-| **USER** | Consulta y pago de facturas personales | `/invoices` |
-| **ADMIN** | Gestión administrativa global (Beta) | `/admin` |
+| **USER** | Consulta facturas pendientes, realiza pagos y descarga recibos. | `/invoices` |
+| **ADMIN** | Control total de usuarios y gestión (Crear/Editar/Borrar) de facturas. | `/admin` |
 
 ## 🚀 Flujo de Acceso
 

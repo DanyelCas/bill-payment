@@ -48,7 +48,8 @@ Para profundizar en el funcionamiento del sistema, consulta los siguientes manua
 - [🔐 **Guía de Autenticación**](docs/AUTH.md): Roles, credenciales y flujo de acceso.
 - [🔌 **Manual de Mock API**](docs/MOCKS.md): Endpoints, datos de prueba y solución de problemas.
 - [🏗️ **Arquitectura y Estructura**](docs/ARCHITECTURE.md): Organización del código y convenciones técnicas.
-- [🧪 **Guía de Testing y Calidad**](CHANGELOG.md) (Ver también `RELEASE_NOTES.md`).
+- [📊 **Diagramas del Sistema**](docs/diagrams): Visualización de arquitectura, componentes y flujos.
+- [🧪 **Historial de Cambios**](CHANGELOG.md).
 
 ---
 
