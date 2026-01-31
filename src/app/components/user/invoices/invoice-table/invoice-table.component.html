@@ -51,51 +51,60 @@
     </div>
 
     <div class="table-wrapper" *ngIf="viewMode === 'list'">
-      <table class="invoices-table" role="table" aria-label="Tabla de facturas">
-        <thead>
-          <tr>
-            <th scope="col" class="col-checkbox">
-              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)"
-                [disabled]="!hasPendingInvoices()" aria-label="Seleccionar todas las facturas pendientes">
-            </th>
-            <th scope="col">Servicio</th>
-            <th scope="col">Período</th>
-            <th scope="col">Vencimiento</th>
-            <th scope="col">Monto</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let invoice of paginatedInvoices; trackBy: trackByFn"
-            [class.selected]="selectedInvoiceIds.has(invoice.id)" [class.clickable]="isPending(invoice)"
-            (click)="onRowClick(invoice, $event)" (keydown.enter)="onRowClick(invoice, $event)" tabindex="0">
-            <td class="col-checkbox">
-              <input type="checkbox" *ngIf="isPending(invoice)" [checked]="selectedInvoiceIds.has(invoice.id)"
-                (click)="$event.stopPropagation(); toggleSelection(invoice, $event)"
-                [attr.aria-label]="'Seleccionar factura de ' + invoice.servicio">
-            </td>
-            <td>{{ invoice.servicio }}</td>
-            <td>{{ invoice.periodo }}</td>
-            <td>{{ formatDate(invoice.fechaVencimiento) }}</td>
-            <td class="amount">{{ formatCurrency(invoice.monto) }}</td>
-            <td>
-              <span class="estado-badge" [ngClass]="getEstadoClass(invoice)"
-                [attr.aria-label]="'Estado: ' + (isOverdue(invoice) ? 'Vencida' : invoice.estado)">
-                <lucide-icon *ngIf="isOverdue(invoice)" name="alert-circle" [size]="14"
-                  class="overdue-icon-sutil"></lucide-icon>
-                {{ (isOverdue(invoice) ? 'Vencida' : invoice.estado) | titlecase }}
-              </span>
-            </td>
-            <td>
-              <button type="button" class="btn btn-pay" [disabled]="!isPending(invoice)" (click)="onPayClick(invoice)"
-                [attr.aria-label]="'Pagar factura de ' + invoice.servicio">
-                Pagar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <app-table [data]="displayedInvoices" [columns]="columns" [pageSize]="10">
+
+        <!-- Header Checkbox -->
+        <ng-template appTableTemplate="header-select">
+          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)"
+            [disabled]="!hasPendingInvoices()" aria-label="Seleccionar todas las facturas pendientes">
+        </ng-template>
+
+        <!-- Column Checkbox -->
+        <ng-template appTableTemplate="select" let-invoice>
+          <input type="checkbox" *ngIf="isPending(invoice)" [checked]="selectedInvoiceIds.has(invoice.id)"
+            (click)="$event.stopPropagation(); toggleSelection(invoice, $event)"
+            [attr.aria-label]="'Seleccionar factura de ' + invoice.servicio">
+        </ng-template>
+
+        <!-- Column Periodo -->
+        <ng-template appTableTemplate="periodo" let-invoice>
+          {{ invoice.mes }} {{ invoice.anio }}
+        </ng-template>
+
+        <!-- Column Vencimiento -->
+        <ng-template appTableTemplate="vencimiento" let-invoice>
+          {{ formatDate(invoice.fechaVencimiento) }}
+        </ng-template>
+
+        <!-- Column Monto -->
+        <ng-template appTableTemplate="monto" let-invoice>
+          {{ formatCurrency(invoice.monto) }}
+        </ng-template>
+
+        <!-- Column Estado -->
+        <ng-template appTableTemplate="estado" let-invoice>
+          <span class="estado-badge" [ngClass]="getEstadoClass(invoice)"
+            [attr.aria-label]="'Estado: ' + (isOverdue(invoice) ? 'Vencida' : invoice.estado)">
+            <lucide-icon *ngIf="isOverdue(invoice)" name="alert-circle" [size]="14"
+              class="overdue-icon-sutil"></lucide-icon>
+            {{ (isOverdue(invoice) ? 'Vencida' : invoice.estado) | titlecase }}
+          </span>
+        </ng-template>
+
+        <!-- Column Accion -->
+        <ng-template appTableTemplate="accion" let-invoice>
+          <button type="button" class="btn btn-pay" [disabled]="!isPending(invoice)" (click)="onPayClick(invoice)"
+            [attr.aria-label]="'Pagar factura de ' + invoice.servicio">
+            Pagar
+          </button>
+        </ng-template>
+
+        <!-- Empty State -->
+        <div emptyState class="empty-state">
+          <p>No se encontraron facturas</p>
+        </div>
+
+      </app-table>
     </div>
 
     <!-- Grouped View (Also uses Paginated or just displayed? Grouped usually shows all, let's keep all for grouped for now or apply pagination to items? User asked for pagination in general. Applying to List View mainly) -->
@@ -126,7 +135,7 @@
             </div>
             <div class="card-content">
               <div class="card-header">
-                <span class="card-period">{{ invoice.periodo }}</span>
+                <span class="card-period">{{ invoice.mes }} {{ invoice.anio }}</span>
                 <span class="estado-badge" [ngClass]="getEstadoClass(invoice)">
                   <lucide-icon *ngIf="isOverdue(invoice)" name="alert-circle" [size]="14"
                     class="overdue-icon-sutil"></lucide-icon>

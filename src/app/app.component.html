@@ -4,7 +4,7 @@
       <div class="brand">
         <!-- Replaced title with Greeting as requested -->
         <h1 *ngIf="authService.getCurrentUser() as user">
-          Hola, {{ user.name }} <span class="user-id">(ID: {{ user.id }})</span>
+          Hola, {{ user.name }} <span class="user-id" *ngIf="user.role !== 'ADMIN'">(ID: {{ user.id }})</span>
         </h1>
         <p class="subtitle">Bienvenido a tu Banca en Línea</p>
       </div>

@@ -5,6 +5,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { InvoiceEventsService } from '../../../../services/invoice-events.service';
 import { InvoiceTableComponent } from '../invoice-table/invoice-table.component';
 import { ReceiptService } from '../../../../services/receipt.service';
+import { parsePeriodoFromFields, getPeriodoDisplay } from '../../../../utils/periodo.utils';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -25,7 +26,7 @@ export class InvoiceListComponent implements OnInit {
   isProcessingPayment = false;
   paymentSuccess = false;
   paymentError: string | null = null;
-  // ...
+
   currentCustomerId: string | null = null;
   currentCustomerName: string = 'Cliente'; // Default
 
@@ -207,7 +208,6 @@ export class InvoiceListComponent implements OnInit {
     // Validación movida a Smart Selection en la tabla.
     // Solo permitimos el pago si hay facturas seleccionadas.
 
-
     this.selectedInvoicesForPayment = invoices;
     this.isPaymentModalOpen = true;
     this.paymentSuccess = false;
@@ -230,9 +230,9 @@ export class InvoiceListComponent implements OnInit {
 
       if (missingEarlier.length > 0) {
         return `<div style="text-align: left;">
-          <p>No puedes pagar <strong>${invoice.servicio}</strong> de <strong>${invoice.periodo}</strong> porque tienes facturas pendientes de meses anteriores no seleccionadas:</p>
+          <p>No puedes pagar <strong>${invoice.servicio}</strong> de <strong>${getPeriodoDisplay(invoice.mes, invoice.anio)}</strong> porque tienes facturas pendientes de meses anteriores no seleccionadas:</p>
           <ul style="margin: 10px 0;">
-            ${missingEarlier.map(inv => `<li>${inv.periodo} - ${this.formatCurrency(inv.monto)}</li>`).join('')}
+            ${missingEarlier.map(inv => `<li>${getPeriodoDisplay(inv.mes, inv.anio)} - ${this.formatCurrency(inv.monto)}</li>`).join('')}
           </ul>
           <p style="margin-top: 10px;"><em>Por favor, selecciona también los meses anteriores para proceder.</em></p>
         </div>`;
@@ -246,7 +246,7 @@ export class InvoiceListComponent implements OnInit {
    * Encuentra facturas pendientes anteriores del mismo servicio
    */
   private findEarlierPendingInvoices(invoice: Invoice): Invoice[] {
-    const invoiceDate = this.parsePeriodo(invoice.periodo);
+    const invoiceDate = parsePeriodoFromFields(invoice.mes, invoice.anio);
 
     return this.invoices.filter(inv => {
       // Mismo servicio, estado pendiente o vencida, y fecha anterior
@@ -254,30 +254,13 @@ export class InvoiceListComponent implements OnInit {
       if (inv.estado === 'pagado') return false;
       if (inv.id === invoice.id) return false;
 
-      const invDate = this.parsePeriodo(inv.periodo);
+      const invDate = parsePeriodoFromFields(inv.mes, inv.anio);
       return invDate < invoiceDate;
     }).sort((a, b) => {
-      const dateA = this.parsePeriodo(a.periodo);
-      const dateB = this.parsePeriodo(b.periodo);
+      const dateA = parsePeriodoFromFields(a.mes, a.anio);
+      const dateB = parsePeriodoFromFields(b.mes, b.anio);
       return dateA.getTime() - dateB.getTime();
     });
-  }
-
-  /**
-   * Convierte un periodo "Enero 2024" a Date
-   */
-  private parsePeriodo(periodo: string): Date {
-    const meses: { [key: string]: number } = {
-      'enero': 0, 'febrero': 1, 'marzo': 2, 'abril': 3,
-      'mayo': 4, 'junio': 5, 'julio': 6, 'agosto': 7,
-      'septiembre': 8, 'octubre': 9, 'noviembre': 10, 'diciembre': 11
-    };
-
-    const parts = periodo.toLowerCase().split(' ');
-    const mes = meses[parts[0]];
-    const anio = parseInt(parts[1], 10);
-
-    return new Date(anio, mes, 1);
   }
 
   /**

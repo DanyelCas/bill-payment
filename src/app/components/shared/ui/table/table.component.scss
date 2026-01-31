@@ -1,0 +1,128 @@
+.table-container {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+
+    .loader-container {
+        padding: 2rem;
+        text-align: center;
+        color: #4a5568;
+
+        .spinner {
+            margin: 0 auto 1rem;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3182ce;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.clickable {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f7fafc;
+            }
+        }
+
+        // Utilities for cells
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: #a0aec0;
+        }
+    }
+
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-top: 1px solid #e2e8f0;
+        background: #f7fafc;
+
+        .btn-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover:not(:disabled) {
+                border-color: #3182ce;
+                color: #3182ce;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                background: #f7fafc;
+            }
+        }
+
+        .page-info {
+            font-size: 0.875rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

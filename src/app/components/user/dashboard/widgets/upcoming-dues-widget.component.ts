@@ -59,9 +59,9 @@ import { Invoice } from '../../../../models/invoice.model';
                    <span class="label">Monto:</span>
                    <span class="value amount-value">Bs. {{ invoice.monto | number:'1.2-2' }}</span>
                  </div>
-                 <div class="detail-row" *ngIf="invoice.periodo">
+                 <div class="detail-row" *ngIf="invoice.mes">
                    <span class="label">Período:</span>
-                   <span class="value">{{ invoice.periodo }}</span>
+                   <span class="value">{{ invoice.mes }} {{ invoice.anio }}</span>
                  </div>
                </div>
              </div>
@@ -244,7 +244,7 @@ import { Invoice } from '../../../../models/invoice.model';
                 justify-content: space-between;
                 font-size: 0.75rem;
                 margin-bottom: 0.2rem;
-
+                
                 &:last-child { margin-bottom: 0; }
 
                 .label {

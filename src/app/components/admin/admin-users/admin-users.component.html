@@ -1,0 +1,89 @@
+<div class="users-container">
+    <div class="actions-bar">
+        <div class="search-container">
+            <lucide-icon name="search" class="search-icon"></lucide-icon>
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar usuarios..." class="search-input">
+        </div>
+        <button (click)="openAddModal()" class="btn-primary">
+            <lucide-icon name="user-plus"></lucide-icon>
+            Nuevo Usuario
+        </button>
+    </div>
+
+    <div class="table-container">
+        <app-table [data]="filteredUsers" [columns]="columns" [isLoading]="isLoading">
+
+            <!-- Email Template -->
+            <ng-template appTableTemplate="email" let-user>
+                {{ user.email || '-' }}
+            </ng-template>
+
+            <!-- Status Template -->
+            <ng-template appTableTemplate="status" let-user>
+                <span class="status-badge" [class.badge-active]="user.status === 'active'"
+                    [class.badge-inactive]="user.status === 'inactive'">
+                    {{ user.status === 'active' ? 'Activo' : 'Inactivo' }}
+                </span>
+            </ng-template>
+
+            <!-- Actions Template -->
+            <ng-template appTableTemplate="actions" let-user>
+                <div class="actions-cell">
+                    <button (click)="openEditModal(user)" class="btn-icon" title="Editar">
+                        <lucide-icon name="edit"></lucide-icon>
+                    </button>
+                    <button (click)="toggleUserStatus(user)" class="btn-icon"
+                        [class.btn-inactivate]="user.status === 'active'"
+                        [class.btn-activate]="user.status === 'inactive'"
+                        [title]="user.status === 'active' ? 'Inactivar' : 'Activar'">
+                        <lucide-icon [name]="user.status === 'active' ? 'user-minus' : 'user-check'"></lucide-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+            <!-- Empty State -->
+            <div emptyState class="empty-state">
+                <lucide-icon name="users"></lucide-icon>
+                <p>No hay usuarios registrados</p>
+            </div>
+
+        </app-table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+            <button (click)="closeModal()" class="btn-close">
+                <lucide-icon name="x"></lucide-icon>
+            </button>
+        </div>
+
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="edit-name">Nombre Completo</label>
+                <input type="text" id="edit-name" formControlName="name" placeholder="Ej: Juan Perez">
+                <div class="error-msg" *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid">
+                    El nombre es requerido (min 3 caracteres)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-email">Email</label>
+                <input type="email" id="edit-email" formControlName="email" placeholder="Ej: juan@example.com">
+                <div class="error-msg" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+                    Email válido requerido
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" (click)="closeModal()" class="btn-secondary">Cancelar</button>
+                <button type="submit" [disabled]="userForm.invalid || isLoading" class="btn-primary">
+                    {{ isLoading ? 'Guardando...' : 'Guardar' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

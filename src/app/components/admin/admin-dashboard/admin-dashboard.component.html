@@ -1,0 +1,19 @@
+<div class="dashboard-container">
+    <header>
+        <div class="header-content">
+            <h1>Panel de Administración</h1>
+            <p class="subtitle">Gestiona usuarios y facturas</p>
+        </div>
+
+    </header>
+
+    <app-tabs [tabs]="tabs" [activeTab]="activeTab" (activeTabChange)="onTabChange($event)">
+    </app-tabs>
+
+    <main class="dashboard-content">
+        <ng-container [ngSwitch]="activeTab">
+            <app-admin-users *ngSwitchCase="'users'"></app-admin-users>
+            <app-admin-invoices *ngSwitchCase="'invoices'"></app-admin-invoices>
+        </ng-container>
+    </main>
+</div>

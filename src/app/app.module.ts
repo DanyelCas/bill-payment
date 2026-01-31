@@ -26,11 +26,16 @@ import { ReceiptSearchComponent } from './components/user/receipts/receipt-searc
 
 // Admin Components
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
+import { AdminInvoicesComponent } from './components/admin/admin-invoices/admin-invoices.component';
 
 // Shared Components
 import { MultiSelectDropdownComponent } from './components/shared/ui/multi-select-dropdown/multi-select-dropdown.component';
 import { TabsComponent } from './components/shared/ui/tabs/tabs.component';
-import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search } from 'lucide-angular';
+import { TableComponent } from './components/shared/ui/table/table.component';
+import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Edit, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus } from 'lucide-angular';
+
+import { TableTemplateDirective } from './components/shared/ui/table/table-template.directive';
 
 @NgModule({
   declarations: [
@@ -41,6 +46,8 @@ import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingU
     InvoicePaymentComponent,
     LoginComponent,
     AdminDashboardComponent,
+    AdminUsersComponent,
+    AdminInvoicesComponent,
     DashboardComponent,
     SummaryWidgetComponent,
     UpcomingDuesWidgetComponent,
@@ -48,7 +55,10 @@ import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingU
     SpendChartComponent,
     InvoiceStatusChartComponent,
     MultiSelectDropdownComponent,
+    MultiSelectDropdownComponent,
     TabsComponent,
+    TableComponent,
+    TableTemplateDirective,
     ReceiptSearchComponent
   ],
   imports: [
@@ -60,7 +70,7 @@ import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingU
     ReactiveFormsModule,
     HttpClientModule,
     NgxChartsModule,
-    LucideAngularModule.pick({ CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search })
+    LucideAngularModule.pick({ CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Edit, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus })
   ],
   providers: [],
   bootstrap: [AppComponent],

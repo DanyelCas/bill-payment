@@ -1,0 +1,200 @@
+<div class="invoices-container">
+    <div class="actions-bar">
+        <h3 class="section-title">Gestión de Facturas</h3>
+        <button (click)="openCreateModal()" class="btn-primary">
+            <lucide-icon name="file-plus"></lucide-icon>
+            Nueva Factura
+        </button>
+    </div>
+
+    <!-- Search Filters Row -->
+    <div class="filters-row">
+        <div class="filter-group">
+            <label>Buscador de Cliente</label>
+            <div class="search-inputs">
+                <div class="input-with-icon">
+                    <lucide-icon name="search"></lucide-icon>
+                    <input type="text" [(ngModel)]="searchFilters.customerName" placeholder="Buscar por nombre..."
+                        class="filter-input">
+                </div>
+                <div class="input-with-icon compact">
+                    <lucide-icon name="search"></lucide-icon>
+                    <input type="text" [(ngModel)]="searchFilters.customerId" placeholder="ID..."
+                        class="filter-input id-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label>Servicios</label>
+                <app-multi-select-dropdown [options]="serviceOptions" placeholder="Todos los servicios" icon="package"
+                    (selectionChange)="onServiceSelectionChange($event)">
+                </app-multi-select-dropdown>
+            </div>
+
+            <div class="filter-group">
+                <label>Periodo (Mes)</label>
+                <app-multi-select-dropdown [options]="monthOptions" placeholder="Cualquier mes" icon="calendar-clock"
+                    (selectionChange)="onMonthSelectionChange($event)">
+                </app-multi-select-dropdown>
+            </div>
+
+            <div class="filter-group">
+                <label>Año</label>
+                <app-multi-select-dropdown [options]="yearOptions" placeholder="Todos los años" icon="calendar-clock"
+                    (selectionChange)="onYearSelectionChange($event)">
+                </app-multi-select-dropdown>
+            </div>
+
+            <div class="filter-group">
+                <label>Estado</label>
+                <app-multi-select-dropdown [options]="statusOptions" placeholder="Todos los estados" icon="inbox"
+                    (selectionChange)="onStatusSelectionChange($event)">
+                </app-multi-select-dropdown>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <app-table [data]="filteredInvoices" [columns]="columns" [isLoading]="isLoading">
+
+            <!-- Customer ID Template -->
+            <ng-template appTableTemplate="customerId" let-invoice>
+                {{ invoice.customerId || '-' }}
+            </ng-template>
+
+            <!-- Customer Template -->
+            <ng-template appTableTemplate="customer" let-invoice>
+                {{ getUserName(invoice.customerId) }}
+            </ng-template>
+
+            <!-- Amount Template -->
+            <ng-template appTableTemplate="monto" let-invoice>
+                Bs. {{ invoice.monto | number:'1.2-2' }}
+            </ng-template>
+
+            <!-- Date Template -->
+            <ng-template appTableTemplate="fechaVencimiento" let-invoice>
+                {{ invoice.fechaVencimiento | date:'mediumDate' }}
+            </ng-template>
+
+            <!-- Status Template -->
+            <ng-template appTableTemplate="estado" let-invoice>
+                <span class="badge" [class.badge-paid]="invoice.estado === 'pagado'"
+                    [class.badge-pending]="invoice.estado === 'pendiente' && !isInvoiceOverdue(invoice)"
+                    [class.badge-overdue]="isInvoiceOverdue(invoice)">
+                    {{ (isInvoiceOverdue(invoice) ? 'Vencido' : invoice.estado) | titlecase }}
+                </span>
+            </ng-template>
+
+            <!-- Actions Template -->
+            <ng-template appTableTemplate="actions" let-invoice>
+                <div class="actions-cell">
+                    <button (click)="openEditModal(invoice)" class="btn-icon" title="Editar">
+                        <lucide-icon name="edit"></lucide-icon>
+                    </button>
+                    <button (click)="deleteInvoice(invoice.id)" class="btn-icon btn-danger" title="Eliminar">
+                        <lucide-icon name="trash-2"></lucide-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+            <!-- Empty State -->
+            <div emptyState class="empty-state">
+                <lucide-icon name="file-text"></lucide-icon>
+                <p>No hay facturas registradas</p>
+            </div>
+
+        </app-table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{{ isEditing ? 'Editar Factura' : 'Nueva Factura' }}</h2>
+            <button (click)="closeModal()" class="btn-close">
+                <lucide-icon name="x"></lucide-icon>
+            </button>
+        </div>
+
+        <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label>Cliente</label>
+                <app-multi-select-dropdown [options]="customerOptions" placeholder="Seleccione un cliente"
+                    [singleSelection]="true" [selectedValues]="selectedFormCustomer" [showSearch]="true"
+                    (selectionChange)="updateFormSelection('customerId', $event)" icon="user">
+                </app-multi-select-dropdown>
+            </div>
+
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Servicio</label>
+                    <div class="dropdown-wrapper">
+                        <app-multi-select-dropdown [options]="serviceOptions" placeholder="Seleccione servicio"
+                            [singleSelection]="true" [selectedValues]="selectedFormService"
+                            (selectionChange)="updateFormSelection('servicio', $event)" icon="zap">
+                        </app-multi-select-dropdown>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="invoiceForm.get('servicio')?.touched && invoiceForm.get('servicio')?.invalid">
+                        Requerido
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mes</label>
+                    <div class="dropdown-wrapper">
+                        <app-multi-select-dropdown [options]="monthOptions" placeholder="Seleccione mes"
+                            [singleSelection]="true" [selectedValues]="selectedFormMonth"
+                            (selectionChange)="updateFormSelection('mes', $event)" icon="calendar">
+                        </app-multi-select-dropdown>
+                    </div>
+                    <div class="error-msg" *ngIf="invoiceForm.get('mes')?.touched && invoiceForm.get('mes')?.invalid">
+                        Requerido
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Año</label>
+                    <input type="number" formControlName="anio" placeholder="Ej: 2026" min="2020" max="2099">
+                    <div class="error-msg" *ngIf="invoiceForm.get('anio')?.touched && invoiceForm.get('anio')?.invalid">
+                        Requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Monto (Bs)</label>
+                    <input type="number" formControlName="monto" step="0.01" min="0">
+                    <div class="error-msg"
+                        *ngIf="invoiceForm.get('monto')?.touched && invoiceForm.get('monto')?.invalid">
+                        Requerido
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Vencimiento</label>
+                    <input type="date" formControlName="fechaVencimiento">
+                    <div class="error-msg"
+                        *ngIf="invoiceForm.get('fechaVencimiento')?.touched && invoiceForm.get('fechaVencimiento')?.invalid">
+                        Requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" (click)="closeModal()" class="btn-secondary">Cancelar</button>
+                <button type="submit" [disabled]="invoiceForm.invalid || isLoading" class="btn-primary">
+                    {{ isLoading ? 'Guardando...' : (isEditing ? 'Guardar Cambios' : 'Crear Factura') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

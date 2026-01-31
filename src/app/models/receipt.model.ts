@@ -1,7 +1,8 @@
 export interface ReceiptItem {
     invoiceId: number;
     servicio: string;
-    periodo: string;
+    mes: string;
+    anio: number;
     monto: number;
 }
 

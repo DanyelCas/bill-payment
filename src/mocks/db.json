@@ -3,131 +3,156 @@
     {
       "id": "100001",
       "name": "Juan Perez",
-      "email": "juan.perez@example.com"
+      "email": "juan.perez@example.com",
+      "status": "active"
     },
     {
       "id": "100002",
-      "name": "Juan Perez",
-      "email": "juan.perez.2@example.com"
+      "name": "Juan Perez 4",
+      "email": "daniel.castillo@gmail.com",
+      "status": "active"
     }
   ],
   "invoices": [
     {
       "id": 1,
       "customerId": "100001",
-      "servicio": "Electricidad",
-      "periodo": "Noviembre 2025",
+      "servicio": "Luz Eléctrica",
       "monto": 980.45,
       "fechaVencimiento": "2025-12-10",
-      "estado": "pagado"
+      "estado": "pendiente",
+      "mes": "Noviembre",
+      "anio": 2025
     },
     {
       "id": 2,
       "customerId": "100001",
-      "servicio": "Agua",
-      "periodo": "Noviembre 2025",
+      "servicio": "Agua Potable",
       "monto": 320.1,
       "fechaVencimiento": "2025-12-15",
-      "estado": "pagado"
+      "estado": "pendiente",
+      "mes": "Noviembre",
+      "anio": 2025
     },
     {
       "id": 3,
       "customerId": "100001",
-      "servicio": "Internet",
-      "periodo": "Noviembre 2025",
+      "servicio": "Internet Fibra",
       "monto": 550,
       "fechaVencimiento": "2025-12-05",
-      "estado": "pagado"
+      "estado": "pendiente",
+      "mes": "Noviembre",
+      "anio": 2025
     },
     {
       "id": 4,
       "customerId": "100001",
-      "servicio": "Electricidad",
-      "periodo": "Diciembre 2025",
+      "servicio": "Luz Eléctrica",
       "monto": 1010.3,
       "fechaVencimiento": "2026-01-10",
-      "estado": "pagado"
+      "estado": "pagado",
+      "mes": "Diciembre",
+      "anio": 2025
     },
     {
       "id": 5,
       "customerId": "100001",
-      "servicio": "Agua",
-      "periodo": "Diciembre 2025",
+      "servicio": "Agua Potable",
       "monto": 340.8,
       "fechaVencimiento": "2026-01-15",
-      "estado": "pagado"
+      "estado": "pagado",
+      "mes": "Diciembre",
+      "anio": 2025
     },
     {
       "id": 6,
       "customerId": "100001",
-      "servicio": "Internet",
-      "periodo": "Diciembre 2025",
+      "servicio": "Internet Fibra",
       "monto": 550,
       "fechaVencimiento": "2026-01-05",
-      "estado": "pagado"
+      "estado": "pagado",
+      "mes": "Diciembre",
+      "anio": 2025
     },
     {
       "id": 7,
       "customerId": "100001",
-      "servicio": "Electricidad",
-      "periodo": "Enero 2026",
+      "servicio": "Luz Eléctrica",
       "monto": 1250.9,
       "fechaVencimiento": "2026-02-10",
-      "estado": "pagado"
+      "estado": "pagado",
+      "mes": "Enero",
+      "anio": 2026
     },
     {
       "id": 8,
       "customerId": "100001",
-      "servicio": "Telefonía",
-      "periodo": "Enero 2026",
+      "servicio": "Telefonía Fija",
       "monto": 280.5,
       "fechaVencimiento": "2026-02-15",
-      "estado": "pendiente"
+      "estado": "pendiente",
+      "mes": "Enero",
+      "anio": 2026
     },
     {
       "id": 9,
       "customerId": "100001",
-      "servicio": "Televisión por cable",
-      "periodo": "Enero 2026",
+      "servicio": "TV Cable",
       "monto": 410,
       "fechaVencimiento": "2026-02-15",
-      "estado": "pendiente"
+      "estado": "pendiente",
+      "mes": "Enero",
+      "anio": 2026
     },
     {
       "id": 10,
       "customerId": "100001",
-      "servicio": "Agua",
-      "periodo": "Enero 2026",
+      "servicio": "Agua Potable",
       "monto": 350.6,
       "fechaVencimiento": "2026-02-20",
-      "estado": "pendiente"
+      "estado": "pendiente",
+      "mes": "Enero",
+      "anio": 2026
     },
     {
       "id": 11,
       "customerId": "100001",
-      "servicio": "Internet",
-      "periodo": "Enero 2026",
+      "servicio": "Internet Fibra",
       "monto": 550,
       "fechaVencimiento": "2026-02-05",
-      "estado": "pendiente"
+      "estado": "pendiente",
+      "mes": "Enero",
+      "anio": 2026
     },
     {
       "id": 12,
       "customerId": "100001",
-      "servicio": "Electricidad",
-      "periodo": "Febrero 2026",
+      "servicio": "Luz Eléctrica",
       "monto": 1100,
       "fechaVencimiento": "2026-03-10",
-      "estado": "pagado"
+      "estado": "pagado",
+      "mes": "Febrero",
+      "anio": 2026
     },
     {
       "id": 13,
       "customerId": "100002",
-      "servicio": "Gas domiciliario",
-      "periodo": "Enero 2026",
+      "servicio": "Gas Domiciliario",
       "monto": 210.4,
       "fechaVencimiento": "2026-02-25",
-      "estado": "pendiente"
+      "estado": "pendiente",
+      "mes": "Enero",
+      "anio": 2026
+    },
+    {
+      "customerId": "100001",
+      "servicio": "Internet Fibra",
+      "mes": "Enero",
+      "anio": 2026,
+      "monto": 233.1,
+      "fechaVencimiento": "2026-06-06",
+      "estado": "pendiente",
+      "id": 14
     }
   ],
   "receipts": [
@@ -138,9 +163,10 @@
       "items": [
         {
           "invoiceId": 1,
-          "servicio": "Electricidad",
-          "periodo": "Noviembre 2025",
-          "monto": 980.45
+          "servicio": "Luz Eléctrica",
+          "monto": 980.45,
+          "mes": "Noviembre",
+          "anio": 2025
         }
       ],
       "totalAmount": 980.45,
@@ -153,9 +179,10 @@
       "items": [
         {
           "invoiceId": 2,
-          "servicio": "Agua",
-          "periodo": "Noviembre 2025",
-          "monto": 320.1
+          "servicio": "Agua Potable",
+          "monto": 320.1,
+          "mes": "Noviembre",
+          "anio": 2025
         }
       ],
       "totalAmount": 320.1,
@@ -168,9 +195,10 @@
       "items": [
         {
           "invoiceId": 3,
-          "servicio": "Internet",
-          "periodo": "Noviembre 2025",
-          "monto": 550
+          "servicio": "Internet Fibra",
+          "monto": 550,
+          "mes": "Noviembre",
+          "anio": 2025
         }
       ],
       "totalAmount": 550,
@@ -183,9 +211,10 @@
       "items": [
         {
           "invoiceId": 4,
-          "servicio": "Electricidad",
-          "periodo": "Diciembre 2025",
-          "monto": 1010.3
+          "servicio": "Luz Eléctrica",
+          "monto": 1010.3,
+          "mes": "Diciembre",
+          "anio": 2025
         }
       ],
       "totalAmount": 1010.3,
@@ -198,15 +227,17 @@
       "items": [
         {
           "invoiceId": 5,
-          "servicio": "Agua",
-          "periodo": "Diciembre 2025",
-          "monto": 340.8
+          "servicio": "Agua Potable",
+          "monto": 340.8,
+          "mes": "Diciembre",
+          "anio": 2025
         },
         {
           "invoiceId": 6,
-          "servicio": "Internet",
-          "periodo": "Diciembre 2025",
-          "monto": 550
+          "servicio": "Internet Fibra",
+          "monto": 550,
+          "mes": "Diciembre",
+          "anio": 2025
         }
       ],
       "totalAmount": 890.8,
@@ -220,15 +251,17 @@
       "items": [
         {
           "invoiceId": 7,
-          "servicio": "Electricidad",
-          "periodo": "Enero 2026",
-          "monto": 1250.9
+          "servicio": "Luz Eléctrica",
+          "monto": 1250.9,
+          "mes": "Enero",
+          "anio": 2026
         },
         {
           "invoiceId": 12,
-          "servicio": "Electricidad",
-          "periodo": "Febrero 2026",
-          "monto": 1100
+          "servicio": "Luz Eléctrica",
+          "monto": 1100,
+          "mes": "Febrero",
+          "anio": 2026
         }
       ],
       "totalAmount": 2350.9,

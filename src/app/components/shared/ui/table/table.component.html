@@ -1,0 +1,55 @@
+<div class="table-container">
+    <div class="loader-container" *ngIf="isLoading">
+        <div class="spinner"></div> <!-- Assuming global spinner style or define one -->
+        <p>Cargando...</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!isLoading">
+        <table>
+            <thead>
+                <tr>
+                    <th *ngFor="let col of columns" [class]="col.classes">
+                        <ng-container *ngIf="hasTemplate('header-' + col.key); else defaultHeader">
+                            <ng-container *ngTemplateOutlet="templates['header-' + col.key]"></ng-container>
+                        </ng-container>
+                        <ng-template #defaultHeader>
+                            {{ col.header }}
+                        </ng-template>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of paginatedData" (click)="onRowClick(item)" [class.clickable]="rowClickable">
+                    <td *ngFor="let col of columns" [class]="col.classes">
+                        <!-- Template Render -->
+                        <ng-container *ngIf="hasTemplate(col.key); else defaultCell">
+                            <ng-container *ngTemplateOutlet="templates[col.key]; context: { $implicit: item }">
+                            </ng-container>
+                        </ng-container>
+
+                        <!-- Default Render -->
+                        <ng-template #defaultCell>
+                            {{ item[col.key] }}
+                        </ng-template>
+                    </td>
+                </tr>
+
+                <tr *ngIf="paginatedData.length === 0">
+                    <td [attr.colspan]="columns.length" class="empty-state">
+                        <ng-content select="[emptyState]"></ng-content>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-controls" *ngIf="totalPages > 1 && !isLoading">
+        <button class="btn-page" [disabled]="currentPage === 1" (click)="prevPage()">
+            <lucide-icon name="chevron-left" [size]="16"></lucide-icon>
+        </button>
+        <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button class="btn-page" [disabled]="currentPage === totalPages" (click)="nextPage()">
+            <lucide-icon name="chevron-right" [size]="16"></lucide-icon>
+        </button>
+    </div>
+</div>

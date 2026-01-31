@@ -12,9 +12,12 @@ export class InvoiceService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getInvoices(customerId: string): Observable<Invoice[]> {
+  getInvoices(customerId?: string): Observable<Invoice[]> {
+    const url = customerId
+      ? `${this.apiUrl}/invoices?customerId=${customerId}`
+      : `${this.apiUrl}/invoices`;
     return this.http
-      .get<Invoice[]>(`${this.apiUrl}/invoices?customerId=${customerId}`)
+      .get<Invoice[]>(url)
       .pipe(
         catchError((error) => {
           console.error('Error fetching invoices:', error);
@@ -54,5 +57,34 @@ export class InvoiceService {
   payInvoices(invoiceIds: number[]): Observable<Invoice[]> {
     const requests = invoiceIds.map((id) => this.payInvoice(id));
     return forkJoin(requests);
+  }
+
+  createInvoice(invoice: Omit<Invoice, 'id'>): Observable<Invoice> {
+    return this.http.post<Invoice>(`${this.apiUrl}/invoices`, invoice).pipe(
+      catchError((error) => {
+        console.error('Error creating invoice:', error);
+        return throwError(
+          () => new Error('No se pudo crear la factura.')
+        );
+      })
+    );
+  }
+
+  updateInvoice(invoice: Invoice): Observable<Invoice> {
+    return this.http.put<Invoice>(`${this.apiUrl}/invoices/${invoice.id}`, invoice).pipe(
+      catchError((error) => {
+        console.error('Error updating invoice:', error);
+        return throwError(() => new Error('No se pudo actualizar la factura.'));
+      })
+    );
+  }
+
+  deleteInvoice(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/invoices/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error deleting invoice:', error);
+        return throwError(() => new Error('No se pudo eliminar la factura.'));
+      })
+    );
   }
 }

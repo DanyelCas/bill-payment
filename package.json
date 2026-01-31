@@ -50,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "eslint": "^8.54.0",
+    "glob": "^13.0.0",
     "jasmine-core": "~5.1.0",
     "json-server": "^0.17.4",
     "karma": "~6.4.0",

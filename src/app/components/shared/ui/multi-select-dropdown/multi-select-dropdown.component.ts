@@ -17,6 +17,8 @@ export class MultiSelectDropdownComponent {
   @Input() placeholder: string = 'Seleccionar...';
   @Input() icon: string = 'filter'; // Default icon
   @Input() selectedValues: Set<any> = new Set();
+  @Input() singleSelection: boolean = false;
+  @Input() showSearch: boolean = false;
 
   @Output() selectionChange = new EventEmitter<Set<any>>();
 
@@ -36,10 +38,16 @@ export class MultiSelectDropdownComponent {
   toggleSelection(value: any, event: Event): void {
     event.stopPropagation();
 
-    if (this.selectedValues.has(value)) {
-      this.selectedValues.delete(value);
-    } else {
+    if (this.singleSelection) {
+      this.selectedValues.clear();
       this.selectedValues.add(value);
+      this.closeDropdown();
+    } else {
+      if (this.selectedValues.has(value)) {
+        this.selectedValues.delete(value);
+      } else {
+        this.selectedValues.add(value);
+      }
     }
 
     // Convert to new Set to trigger change detection if needed, or just emit
@@ -64,8 +72,10 @@ export class MultiSelectDropdownComponent {
 
   get filteredOptions(): DropdownOption[] {
     if (!this.searchText) return this.options;
+    const search = this.searchText.toLowerCase();
     return this.options.filter(opt =>
-      opt.label.toLowerCase().includes(this.searchText.toLowerCase())
+      opt.label.toLowerCase().includes(search) ||
+      (opt.value && opt.value.toString().toLowerCase().includes(search))
     );
   }
 

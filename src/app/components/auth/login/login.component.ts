@@ -57,19 +57,18 @@ export class LoginComponent {
 
     onAdminLogin(): void {
         if (this.adminForm.valid) {
-            const password = this.adminForm.get('password')?.value;
-            // Mock password check
-            if (password === 'admin123') {
-                this.authService.login('ADMIN').subscribe(() => {
+            const { username, password } = this.adminForm.value;
+            this.authService.loginAdmin(username, password).subscribe((success) => {
+                if (success) {
                     this.router.navigate(['/admin']);
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Acceso Denegado',
-                    text: 'Credenciales de administrador incorrectas.'
-                });
-            }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Acceso Denegado',
+                        text: 'Credenciales de administrador incorrectas.'
+                    });
+                }
+            });
         }
     }
 }

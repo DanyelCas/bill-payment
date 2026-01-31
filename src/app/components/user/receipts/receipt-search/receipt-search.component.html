@@ -41,7 +41,7 @@
                 </div>
                 <div class="items-list">
                     <div class="item" *ngFor="let item of foundReceipt.items">
-                        <span>{{ item.servicio }} ({{ item.periodo }})</span>
+                        <span>{{ item.servicio }} ({{ item.mes }} {{ item.anio }})</span>
                         <span>{{ formatCurrency(item.monto) }}</span>
                     </div>
                 </div>

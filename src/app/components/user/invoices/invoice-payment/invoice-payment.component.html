@@ -24,7 +24,7 @@
             </div>
             <div class="detail-item">
               <span class="detail-label">Período:</span>
-              <span class="detail-value">{{ singleInvoice?.periodo }}</span>
+              <span class="detail-value">{{ singleInvoice?.mes }} {{ singleInvoice?.anio }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Estado Actual:</span>
@@ -46,7 +46,7 @@
             <div class="bulk-item" *ngFor="let inv of invoices">
               <div class="bulk-info">
                 <span class="bulk-service">{{ inv.servicio }}</span>
-                <span class="bulk-period">{{ inv.periodo }}</span>
+                <span class="bulk-period">{{ inv.mes }} {{ inv.anio }}</span>
               </div>
               <span class="bulk-amount">{{ formatCurrency(inv.monto) }}</span>
             </div>

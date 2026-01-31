@@ -10,8 +10,8 @@
 
     <!-- Dropdown Menu -->
     <div class="dropdown-menu animate__animated animate__fadeIn" *ngIf="isOpen">
-        <!-- Search (Optional, only if many options) -->
-        <div class="dropdown-search" *ngIf="options.length > 5">
+        <!-- Search (Optional) -->
+        <div class="dropdown-search" *ngIf="showSearch || options.length > 5">
             <lucide-icon name="search" [size]="14" class="search-icon"></lucide-icon>
             <input type="text" [(ngModel)]="searchText" placeholder="Buscar..." (click)="$event.stopPropagation()">
         </div>
@@ -21,7 +21,8 @@
                 (click)="toggleSelection(option.value, $event)" [class.selected]="isSelected(option.value)">
 
                 <div class="checkbox-wrapper">
-                    <input type="checkbox" [checked]="isSelected(option.value)" tabindex="-1">
+                    <input *ngIf="!singleSelection" type="checkbox" [checked]="isSelected(option.value)" tabindex="-1">
+                    <input *ngIf="singleSelection" type="radio" [checked]="isSelected(option.value)" tabindex="-1">
                 </div>
 
                 <div class="item-content">

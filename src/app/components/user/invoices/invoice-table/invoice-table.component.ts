@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Invoice } from '../../../../models/invoice.model';
+import { TableColumn } from '../../../../components/shared/ui/table/table.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,16 +8,30 @@ import Swal from 'sweetalert2';
   templateUrl: './invoice-table.component.html',
   styleUrls: ['./invoice-table.component.scss'],
 })
-export class InvoiceTableComponent implements OnChanges {
+export class InvoiceTableComponent implements OnChanges, OnInit {
   @Input() invoices: Invoice[] = [];
   @Input() isLoading = false;
   @Input() error: string | null = null;
   @Input() hasSearched = false;
 
   @Output() payInvoice = new EventEmitter<Invoice>();
+  @Output() selectionChange = new EventEmitter<Invoice[]>();
+
+  columns: TableColumn[] = [
+    { key: 'select', header: '', classes: 'col-checkbox' },
+    { key: 'servicio', header: 'Servicio' },
+    { key: 'periodo', header: 'Período' },
+    { key: 'vencimiento', header: 'Vencimiento' },
+    { key: 'monto', header: 'Monto', classes: 'amount' },
+    { key: 'estado', header: 'Estado' },
+    { key: 'accion', header: 'Acción' }
+  ];
   @Output() payInvoices = new EventEmitter<Invoice[]>();
 
   constructor(private cdr: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+  }
 
   selectedInvoiceIds = new Set<number>();
 
@@ -64,7 +79,7 @@ export class InvoiceTableComponent implements OnChanges {
     this.displayedInvoices = this.invoices.filter(invoice => {
       const matchesSearch =
         invoice.servicio.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        invoice.periodo.toLowerCase().includes(this.searchTerm.toLowerCase());
+        (invoice.mes + " " + invoice.anio).toLowerCase().includes(this.searchTerm.toLowerCase());
 
       // Status Filter (Multi-select)
       let matchesStatus = true;
@@ -226,12 +241,12 @@ export class InvoiceTableComponent implements OnChanges {
           html: `
             <div style="text-align: left; color: #333;">
               <p style="margin-bottom: 15px;">
-                No puedes deseleccionar <strong>${invoice.periodo}</strong> porque tienes facturas posteriores seleccionadas:
+                No puedes deseleccionar <strong>${invoice.mes + " " + invoice.anio}</strong> porque tienes facturas posteriores seleccionadas:
               </p>
               <ul style="margin: 10px 0; padding-left: 20px; color: #555;">
                 ${laterSelected.map(inv => `
                   <li style="margin-bottom: 5px;">
-                    <strong>${inv.periodo}</strong> 
+                    <strong>${inv.mes + " " + inv.anio}</strong> 
                     <span style="color: #64748B;">(${this.formatCurrency(inv.monto)})</span>
                   </li>
                 `).join('')}
@@ -266,13 +281,13 @@ export class InvoiceTableComponent implements OnChanges {
           html: `
             <div style="text-align: left; color: #333;">
               <p style="margin-bottom: 15px;">
-                No puedes seleccionar <strong>${invoice.servicio}</strong> de <strong>${invoice.periodo}</strong> 
+                No puedes seleccionar <strong>${invoice.servicio}</strong> de <strong>${invoice.mes + " " + invoice.anio}</strong> 
                 porque tienes facturas anteriores pendientes:
               </p>
               <ul style="margin: 10px 0; padding-left: 20px; color: #555;">
                 ${missingEarlier.map(inv => `
                   <li style="margin-bottom: 5px;">
-                    <strong>${inv.periodo}</strong> 
+                    <strong>${inv.mes + " " + inv.anio}</strong> 
                     <span style="color: #64748B;">(${this.formatCurrency(inv.monto)})</span>
                     ${this.isOverdue(inv) ? '<span style="color: #DC2626; font-weight: bold; font-size: 0.8em; margin-left: 5px;">VENCIDA</span>' : ''}
                   </li>
@@ -300,7 +315,7 @@ export class InvoiceTableComponent implements OnChanges {
    * Finds earlier pending invoices for the same service
    */
   private findEarlierPendingInvoices(invoice: Invoice): Invoice[] {
-    const invoiceDate = this.parsePeriodo(invoice.periodo);
+    const invoiceDate = this.parsePeriodoFrom(invoice.mes, invoice.anio);
 
     return this.invoices.filter(inv => {
       // Same service, pending/overdue, not the same ID
@@ -308,11 +323,11 @@ export class InvoiceTableComponent implements OnChanges {
       if (inv.estado === 'pagado') return false;
       if (inv.id === invoice.id) return false;
 
-      const invDate = this.parsePeriodo(inv.periodo);
+      const invDate = this.parsePeriodoFrom(inv.mes, inv.anio);
       return invDate < invoiceDate;
     }).sort((a, b) => {
-      const dateA = this.parsePeriodo(a.periodo);
-      const dateB = this.parsePeriodo(b.periodo);
+      const dateA = this.parsePeriodoFrom(a.mes, a.anio);
+      const dateB = this.parsePeriodoFrom(b.mes, b.anio);
       return dateA.getTime() - dateB.getTime();
     });
   }
@@ -321,7 +336,7 @@ export class InvoiceTableComponent implements OnChanges {
    * Finds later invoices for the same service that are currently selected
    */
   private findLaterSelectedInvoices(invoice: Invoice): Invoice[] {
-    const invoiceDate = this.parsePeriodo(invoice.periodo);
+    const invoiceDate = this.parsePeriodoFrom(invoice.mes, invoice.anio);
 
     return this.invoices.filter(inv => {
       // Same service
@@ -331,11 +346,11 @@ export class InvoiceTableComponent implements OnChanges {
       // Not the same ID
       if (inv.id === invoice.id) return false;
 
-      const invDate = this.parsePeriodo(inv.periodo);
+      const invDate = this.parsePeriodoFrom(inv.mes, inv.anio);
       return invDate > invoiceDate;
     }).sort((a, b) => {
-      const dateA = this.parsePeriodo(a.periodo);
-      const dateB = this.parsePeriodo(b.periodo);
+      const dateA = this.parsePeriodoFrom(a.mes, a.anio);
+      const dateB = this.parsePeriodoFrom(b.mes, b.anio);
       // Sort ascending (earliest later invoice first)
       return dateA.getTime() - dateB.getTime();
     });
@@ -344,19 +359,17 @@ export class InvoiceTableComponent implements OnChanges {
   /**
    * Helper to parse 'Month Year' string to Date
    */
-  private parsePeriodo(periodo: string): Date {
+  private parsePeriodoFrom(mes: string, anio: number): Date {
     const meses: { [key: string]: number } = {
       'enero': 0, 'febrero': 1, 'marzo': 2, 'abril': 3,
       'mayo': 4, 'junio': 5, 'julio': 6, 'agosto': 7,
       'septiembre': 8, 'octubre': 9, 'noviembre': 10, 'diciembre': 11
     };
 
-    const parts = periodo.toLowerCase().split(' ');
-    // Default to Jan if parse fails, but data should be correct
-    const mes = meses[parts[0]] !== undefined ? meses[parts[0]] : 0;
-    const anio = parseInt(parts[1], 10) || new Date().getFullYear();
+    const mesLower = mes.toLowerCase();
+    const monthIndex = meses[mesLower] !== undefined ? meses[mesLower] : 0;
 
-    return new Date(anio, mes, 1);
+    return new Date(anio, monthIndex, 1);
   }
 
   onRowClick(invoice: Invoice, event: Event): void {

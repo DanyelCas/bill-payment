@@ -33,15 +33,15 @@ export class DashboardService {
 
     constructor(private invoiceService: InvoiceService) { }
 
-    private parsePeriodo(periodo: string): Date {
-        // Format: "Enero 2024"
+    private parsePeriodoFrom(mes: string, anio: number): Date {
+        // Format: "Enero", 2024
         const months: { [key: string]: number } = {
-            'Enero': 0, 'Febrero': 1, 'Marzo': 2, 'Abril': 3, 'Mayo': 4, 'Junio': 5,
-            'Julio': 6, 'Agosto': 7, 'Septiembre': 8, 'Octubre': 9, 'Noviembre': 10, 'Diciembre': 11
+            'enero': 0, 'febrero': 1, 'marzo': 2, 'abril': 3, 'mayo': 4, 'junio': 5,
+            'julio': 6, 'agosto': 7, 'septiembre': 8, 'octubre': 9, 'noviembre': 10, 'diciembre': 11
         };
-        const parts = periodo.split(' ');
-        if (parts.length === 2 && months[parts[0]] !== undefined) {
-            return new Date(parseInt(parts[1]), months[parts[0]], 1);
+        const mesLower = mes.toLowerCase();
+        if (months[mesLower] !== undefined) {
+            return new Date(anio, months[mesLower], 1);
         }
         return new Date(); // Fallback
     }
@@ -63,14 +63,14 @@ export class DashboardService {
 
                 // Upcoming Dues
                 const sortedPending = pending.sort((a, b) =>
-                    this.parsePeriodo(a.periodo).getTime() - this.parsePeriodo(b.periodo).getTime()
+                    this.parsePeriodoFrom(a.mes, a.anio).getTime() - this.parsePeriodoFrom(b.mes, b.anio).getTime()
                 );
                 const upcomingDues = sortedPending;
 
                 // --- Average Spend Calculation ---
                 const allByMonth: { [key: string]: number } = {};
                 invoices.forEach(inv => {
-                    const date = this.parsePeriodo(inv.periodo);
+                    const date = this.parsePeriodoFrom(inv.mes, inv.anio);
                     const key = `${date.getFullYear()}-${date.getMonth()}`;
                     if (!allByMonth[key]) allByMonth[key] = 0;
                     allByMonth[key] += inv.monto;
@@ -203,7 +203,7 @@ export class DashboardService {
                         // Check if overdue
                         let isOverdue = false;
                         if (inv.fechaVencimiento) {
-                            const dueDate = this.parsePeriodo(inv.fechaVencimiento.includes('-') ? inv.periodo : inv.periodo); // Fallback if needed, but logic below uses date string
+                            const dueDate = this.parsePeriodoFrom(inv.mes, inv.anio);
                             // Actually, let's use the same logic as in table component for consistency
                             const dateParts = inv.fechaVencimiento.split('-');
                             if (dateParts.length === 3) {
@@ -238,9 +238,8 @@ export class DashboardService {
                 const byYearAndMonth: { [year: string]: { [month: string]: number } } = {};
 
                 invoices.forEach(inv => {
-                    const parts = inv.periodo.split(' ');
-                    const monthName = parts[0];
-                    const year = parts[1];
+                    const monthName = inv.mes;
+                    const year = inv.anio.toString();
 
                     if (!byYearAndMonth[year]) byYearAndMonth[year] = {};
                     if (!byYearAndMonth[year][monthName]) byYearAndMonth[year][monthName] = 0;

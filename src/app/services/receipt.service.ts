@@ -38,7 +38,8 @@ export class ReceiptService {
             items: invoices.map(inv => ({
                 invoiceId: inv.id,
                 servicio: inv.servicio,
-                periodo: inv.periodo,
+                mes: inv.mes,
+                anio: inv.anio,
                 monto: inv.monto
             })),
             totalAmount: invoices.reduce((sum, inv) => sum + inv.monto, 0),
@@ -126,10 +127,11 @@ export class ReceiptService {
 
 
         // --- Table ---
-        const tableHeaders = [['Servicio', 'Período', 'Monto (Bs.)']];
+        const tableHeaders = [['Servicio', 'Mes', 'Año', 'Monto (Bs.)']];
         const tableData = receipt.items.map(item => [
             item.servicio,
-            item.periodo,
+            item.mes,
+            item.anio.toString(),
             this.formatCurrency(item.monto)
         ]);
 

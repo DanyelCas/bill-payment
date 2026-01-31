@@ -43,7 +43,12 @@ export class AuthService {
     login(id: string): Observable<boolean> {
         // Admin check
         if (id === 'ADMIN') {
-            const adminUser: User = { id: 'ADMIN', name: 'Administrador', role: UserRole.ADMIN };
+            const adminUser: User = {
+                id: 'ADMIN',
+                name: 'Administrador',
+                role: UserRole.ADMIN,
+                status: 'active'
+            };
             this.setSession(adminUser);
             return of(true);
         }
@@ -56,7 +61,8 @@ export class AuthService {
                     const user: User = {
                         id: userFromApi.id.toString(), // Ensure string
                         name: userFromApi.name,
-                        role: UserRole.USER
+                        role: UserRole.USER,
+                        status: userFromApi.status || 'active'
                     };
                     this.setSession(user);
                     return true;
@@ -70,7 +76,19 @@ export class AuthService {
         );
     }
 
-    // loginAdmin method is removed as its functionality is integrated into the new login method
+    loginAdmin(username: string, password: string): Observable<boolean> {
+        if (username === this.ADMIN_MOCK.username && password === this.ADMIN_MOCK.password) {
+            const adminUser: User = {
+                id: 'ADMIN',
+                name: 'Administrador',
+                role: UserRole.ADMIN,
+                status: 'active'
+            };
+            this.setSession(adminUser);
+            return of(true);
+        }
+        return of(false);
+    }
 
     private setSession(user: User): void {
         localStorage.setItem('currentUser', JSON.stringify(user));
