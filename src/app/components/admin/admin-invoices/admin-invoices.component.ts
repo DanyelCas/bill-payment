@@ -66,7 +66,15 @@ export class AdminInvoicesComponent implements OnInit {
 
         return this.invoices.filter(invoice => {
             const customerIdMatch = !this.searchFilters.customerId.trim() ||
-                (invoice.customerId && invoice.customerId.toString().toLowerCase().trim().includes(this.searchFilters.customerId.toLowerCase().trim()));
+                invoice.customerId
+                    ?.toString()
+                    .toLowerCase()
+                    .trim()
+                    .includes(
+                        this.searchFilters.customerId
+                            ?.toLowerCase()
+                            .trim() ?? ''
+                    );
 
             const customerNameMatch = !this.searchFilters.customerName.trim() ||
                 this.getUserName(invoice.customerId).toLowerCase().includes(this.searchFilters.customerName.toLowerCase().trim());
@@ -259,11 +267,7 @@ export class AdminInvoicesComponent implements OnInit {
             // Check for changes
             const hasChanges = Object.keys(this.originalInvoice).some(key => {
                 const originalVal = this.originalInvoice[key];
-                // @ts-ignore
                 const currentVal = invoiceData[key as keyof typeof invoiceData];
-
-                // Simple comparison (loose for numbers/strings just in case, but strict is better if types align)
-                // Using abstract inequality to catch string vs number nuances if any remain
                 return originalVal != currentVal;
             });
 

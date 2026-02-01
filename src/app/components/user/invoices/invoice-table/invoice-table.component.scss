@@ -100,14 +100,14 @@
   .invoices-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.85rem; // Reduced font size
+    font-size: 0.85rem;
 
     th,
     td {
-      padding: 0.75rem; // Reduced padding
+      padding: 0.75rem;
       text-align: left;
       border-bottom: 1px solid #e2e8f0;
-      white-space: nowrap; // Prevent wrapping
+      white-space: nowrap;
     }
 
     .col-checkbox {
@@ -116,7 +116,7 @@
     }
 
     tbody tr {
-      color: #2d3748; // Explicit text color
+      color: #2d3748;
 
       &.selected {
         background-color: #ebf8ff;
@@ -153,15 +153,15 @@
 
   .btn-page {
     background: white;
-    border: 1px solid #cbd5e0; // Slightly darker border
+    border: 1px solid #cbd5e0;
     border-radius: 6px;
-    width: 36px; // Slightly larger
+    width: 36px;
     height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #2d3748; // Darker text/icon color
+    color: #2d3748;
     transition: all 0.2s;
 
     &:hover:not(:disabled) {
@@ -267,7 +267,6 @@
 
 .invoices-table {
   width: 100%;
-  // min-width: 600px; // Removed to prevent forcing parent scroll
   border-collapse: collapse;
   margin-bottom: 0;
 

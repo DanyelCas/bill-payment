@@ -41,7 +41,7 @@
             label {
                 font-size: 0.7rem;
                 font-weight: 700;
-                color: #4a5568; // Darkened from #718096 for contrast
+                color: #4a5568;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 margin-left: 2px;
@@ -57,7 +57,7 @@
                     margin-bottom: 0;
 
                     &:last-child {
-                        max-width: 150px; // Match compact input
+                        max-width: 150px;
                     }
                 }
             }
@@ -80,7 +80,7 @@
                         left: 0.875rem;
                         top: 50%;
                         transform: translateY(-50%);
-                        color: #4a5568; // Darkened from #a0aec0
+                        color: #4a5568;
                         pointer-events: none;
                     }
 
@@ -108,7 +108,7 @@
                 }
 
                 &::placeholder {
-                    color: #718096; // Darkened from #a0aec0 for better visibility
+                    color: #718096;
                 }
             }
         }
@@ -151,7 +151,7 @@
 
         .id-cell {
             font-family: monospace;
-            color: #4a5568; // Darkened from #718096
+            color: #4a5568;
         }
 
         .font-medium {
@@ -165,13 +165,13 @@
             padding: 0.125rem 0.5rem;
             border-radius: 9999px;
             font-size: 0.75rem;
-            font-weight: 600; // Increased weight
+            font-weight: 600;
             background: #ebf8ff;
-            color: #2b6cb0; // Darkened blue for contrast
+            color: #2b6cb0;
 
             &.badge-paid {
                 background: #c6f6d5;
-                color: #22543d; // Darkened from #2f855a
+                color: #22543d;
             }
 
             &.badge-pending {
@@ -192,7 +192,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.625rem 1rem;
-        background: #2b6cb0; // Darkened from #3182ce to meet WCAG AA contrast (5.49:1)
+        background: #2b6cb0;
         color: white;
         border: none;
         border-radius: 6px;
@@ -201,7 +201,7 @@
         transition: background 0.2s;
 
         &:hover {
-            background: #2c5282; // Slightly darker on hover
+            background: #2c5282;
         }
     }
 
@@ -209,7 +209,7 @@
         padding: 0.375rem;
         background: transparent;
         border: none;
-        color: #4a5568; // Darkened from #718096
+        color: #4a5568;
         cursor: pointer;
         border-radius: 4px;
         transition: all 0.2s;
@@ -233,7 +233,7 @@
     .empty-state {
         text-align: center;
         padding: 3rem;
-        color: #4a5568; // Darkened from #a0aec0
+        color: #4a5568;
 
         lucide-icon {
             width: 2rem;
@@ -243,7 +243,6 @@
     }
 }
 
-// Modal Styles
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -283,7 +282,7 @@
         .btn-close {
             background: transparent;
             border: none;
-            color: #718096; // Darkened from #a0aec0
+            color: #718096;
             cursor: pointer;
             padding: 0.25rem;
 
@@ -361,7 +360,7 @@
 
             .btn-primary {
                 padding: 0.625rem 1rem;
-                background: #2b6cb0; // Darkened for accessibility
+                background: #2b6cb0;
                 color: white;
                 border: none;
                 border-radius: 6px;

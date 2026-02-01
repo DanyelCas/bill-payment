@@ -109,7 +109,7 @@ export class InvoiceTableComponent implements OnChanges {
   }
 
   updateServiceOptions(): void {
-    const services = [...new Set(this.invoices.map(i => i.servicio))].sort();
+    const services = [...new Set(this.invoices.map(i => i.servicio))].sort((a, b) => a.localeCompare(b));
     this.serviceOptions = services.map(service => ({
       value: service,
       label: service

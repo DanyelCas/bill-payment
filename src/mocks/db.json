@@ -38,7 +38,7 @@
       "servicio": "Agua Potable",
       "monto": 320.1,
       "fechaVencimiento": "2025-12-15",
-      "estado": "pendiente",
+      "estado": "pagado",
       "mes": "Noviembre",
       "anio": 2025
     },
@@ -169,7 +169,7 @@
       "anio": 2026,
       "monto": 500,
       "fechaVencimiento": "2026-02-02",
-      "estado": "pendiente",
+      "estado": "pagado",
       "id": 15
     },
     {
@@ -181,6 +181,26 @@
       "fechaVencimiento": "2026-01-02",
       "estado": "pendiente",
       "id": 16
+    },
+    {
+      "customerId": "100003",
+      "servicio": "Internet Fibra",
+      "mes": "Diciembre",
+      "anio": 2025,
+      "monto": 100.5,
+      "fechaVencimiento": "2026-01-06",
+      "estado": "pendiente",
+      "id": 17
+    },
+    {
+      "customerId": "100003",
+      "servicio": "Gas Domiciliario",
+      "mes": "Diciembre",
+      "anio": 2025,
+      "monto": 150,
+      "fechaVencimiento": "2026-01-03",
+      "estado": "pagado",
+      "id": 18
     }
   ],
   "receipts": [
@@ -293,6 +313,47 @@
         }
       ],
       "totalAmount": 2350.9,
+      "paymentMethod": "QR / Transferencia"
+    },
+    {
+      "id": "REC-753294-894",
+      "timestamp": "2026-02-01T13:15:53.294Z",
+      "userId": "100003",
+      "customerName": "Daniel Castillo Quispe",
+      "items": [
+        {
+          "invoiceId": 15,
+          "servicio": "Gas Domiciliario",
+          "mes": "Enero",
+          "anio": 2026,
+          "monto": 500
+        },
+        {
+          "invoiceId": 18,
+          "servicio": "Gas Domiciliario",
+          "mes": "Diciembre",
+          "anio": 2025,
+          "monto": 150
+        }
+      ],
+      "totalAmount": 650,
+      "paymentMethod": "QR / Transferencia"
+    },
+    {
+      "id": "REC-065692-903",
+      "timestamp": "2026-02-01T13:21:05.692Z",
+      "userId": "100001",
+      "customerName": "Juan Perez",
+      "items": [
+        {
+          "invoiceId": 2,
+          "servicio": "Agua Potable",
+          "mes": "Noviembre",
+          "anio": 2025,
+          "monto": 320.1
+        }
+      ],
+      "totalAmount": 320.1,
       "paymentMethod": "QR / Transferencia"
     }
   ]

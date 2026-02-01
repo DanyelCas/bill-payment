@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+registerLocaleData(localeEs);
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -19,7 +22,7 @@ import { AverageSpendWidgetComponent } from './components/user/dashboard/widgets
 import { SpendChartComponent } from './components/user/dashboard/charts/spend-chart.component';
 import { InvoiceStatusChartComponent } from './components/user/dashboard/charts/invoice-status-chart.component';
 import { InvoiceListComponent } from './components/user/invoices/invoice-list/invoice-list.component';
-import { InvoiceSearchComponent } from './components/user/invoices/invoice-search/invoice-search.component';
+
 import { InvoiceTableComponent } from './components/user/invoices/invoice-table/invoice-table.component';
 import { InvoicePaymentComponent } from './components/user/invoices/invoice-payment/invoice-payment.component';
 import { ReceiptSearchComponent } from './components/user/receipts/receipt-search/receipt-search.component';
@@ -41,7 +44,6 @@ import { TableTemplateDirective } from './components/shared/ui/table/table-templ
   declarations: [
     AppComponent,
     InvoiceListComponent,
-    InvoiceSearchComponent,
     InvoiceTableComponent,
     InvoicePaymentComponent,
     LoginComponent,
@@ -72,7 +74,9 @@ import { TableTemplateDirective } from './components/shared/ui/table/table-templ
     NgxChartsModule,
     LucideAngularModule.pick({ CircleAlert, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Pencil, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus })
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
