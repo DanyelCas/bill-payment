@@ -19,6 +19,14 @@
       "username": null,
       "role": "USER",
       "status": "active"
+    },
+    {
+      "id": "100004",
+      "name": "maria",
+      "email": "maria@correo.com",
+      "username": null,
+      "role": "USER",
+      "status": "active"
     }
   ],
   "invoices": [
