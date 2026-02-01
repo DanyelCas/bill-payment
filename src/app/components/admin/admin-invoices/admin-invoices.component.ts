@@ -228,6 +228,33 @@ export class AdminInvoicesComponent implements OnInit {
             estado: this.isEditing ? this.invoices.find(inv => inv.id === this.currentEditingId)?.estado || 'pendiente' : 'pendiente'
         };
 
+        // Check for duplicates
+        const isDuplicate = this.invoices.some(inv => {
+            // If editing, skip the current invoice being edited
+            if (this.isEditing && this.currentEditingId === inv.id) {
+                return false;
+            }
+
+            return inv.customerId === invoiceData.customerId &&
+                inv.servicio === invoiceData.servicio &&
+                inv.mes === invoiceData.mes &&
+                inv.anio === invoiceData.anio;
+        });
+
+        if (isDuplicate) {
+            Swal.fire({
+                title: 'Registro duplicado',
+                text: 'Ya existe una factura registrada con el mismo cliente, servicio, mes y año.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    confirmButton: 'swal2-confirm-danger',
+                    popup: 'swal2-rounded-lg'
+                }
+            });
+            return;
+        }
+
         if (this.isEditing && this.currentEditingId) {
             // Check for changes
             const hasChanges = Object.keys(this.originalInvoice).some(key => {

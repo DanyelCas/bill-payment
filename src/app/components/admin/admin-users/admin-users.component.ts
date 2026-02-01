@@ -29,7 +29,7 @@ export class AdminUsersComponent implements OnInit {
         return this.users.filter(user =>
             user.id.toLowerCase().includes(term) ||
             user.name.toLowerCase().includes(term) ||
-            (user.email && user.email.toLowerCase().includes(term))
+            user.email?.toLowerCase().includes(term)
         );
     }
 

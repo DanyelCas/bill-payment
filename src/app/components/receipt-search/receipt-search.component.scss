@@ -86,10 +86,10 @@
         }
 
         &:disabled {
-            opacity: 1; // Full opacity but distinct colors
+            opacity: 1;
             cursor: not-allowed;
-            background: #e2e8f0; // Specific light gray
-            color: #4a5568; // Darkened from #64748b for better visibility
+            background: #e2e8f0;
+            color: #1f2937;
             box-shadow: none;
             transform: none;
         }
@@ -110,14 +110,12 @@ button.btn {
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius-md);
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
     font-size: 1rem;
-
-    // DEFAULT STATE (Disabled / Inactive) - Gray
     background: #e2e8f0;
-    color: #4a5568; // Darkened from #64748b
+    color: #334155;
     box-shadow: none;
+    cursor: not-allowed;
 
     // ACTIVE STATE (Enabled) - Blue
     // Only apply Blue if NOT disabled and NOT having the disabled class
@@ -139,7 +137,7 @@ button.btn {
     &:disabled {
         opacity: 1;
         background: #e2e8f0 !important;
-        color: #4a5568 !important; // Darkened from #64748b
+        color: #334155 !important;
         box-shadow: none !important;
         cursor: not-allowed !important;
         pointer-events: none;

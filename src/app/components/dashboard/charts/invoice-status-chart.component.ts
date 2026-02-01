@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
@@ -48,21 +48,8 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
     }
   `]
 })
-export class InvoiceStatusChartComponent {
-  private _data: any[] = [];
-
-  @Input() set data(value: any[]) {
-    if (value && value.length > 0) {
-      this._data = this.sortData(value);
-    } else {
-      this._data = value || [];
-    }
-  }
-
-  /** Returns the sorted invoice status data */
-  get data(): any[] {
-    return this._data;
-  }
+export class InvoiceStatusChartComponent implements OnInit, OnChanges {
+  @Input() data: any[] = [];
 
   colorScheme: Color = {
     name: 'status',
@@ -71,8 +58,22 @@ export class InvoiceStatusChartComponent {
     domain: ['#48BB78', '#ED8936', '#E53E3E']
   };
 
+  ngOnInit(): void {
+    this.applySortingIfNeeded();
+  }
+
+  ngOnChanges(): void {
+    this.applySortingIfNeeded();
+  }
+
+  private applySortingIfNeeded(): void {
+    if (this.data?.length) {
+      this.data = this.sortData(this.data);
+    }
+  }
+
   private sortData(data: any[]): any[] {
     const order = ['Pagado', 'Pendiente', 'Vencida'];
-    return [...data].sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
+    return data.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
   }
 }

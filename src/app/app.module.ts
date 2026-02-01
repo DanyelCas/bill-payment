@@ -33,7 +33,7 @@ import { AdminInvoicesComponent } from './components/admin/admin-invoices/admin-
 import { MultiSelectDropdownComponent } from './components/shared/ui/multi-select-dropdown/multi-select-dropdown.component';
 import { TabsComponent } from './components/shared/ui/tabs/tabs.component';
 import { TableComponent } from './components/shared/ui/table/table.component';
-import { LucideAngularModule, CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Edit, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus } from 'lucide-angular';
+import { LucideAngularModule, CircleAlert, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Pencil, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus } from 'lucide-angular';
 
 import { TableTemplateDirective } from './components/shared/ui/table/table-template.directive';
 
@@ -70,7 +70,7 @@ import { TableTemplateDirective } from './components/shared/ui/table/table-templ
     ReactiveFormsModule,
     HttpClientModule,
     NgxChartsModule,
-    LucideAngularModule.pick({ CircleAlert, AlertCircle, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Edit, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus })
+    LucideAngularModule.pick({ CircleAlert, CalendarClock, TrendingUp, PiggyBank, CircleCheck, FileText, LayoutGrid, List, CreditCard, Package, Inbox, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, CircleUser, Receipt, ChartColumn, ChartPie, Search, Trash2, Pencil, Plus, X, UserPlus, FilePlus, Users, UserCheck, UserMinus })
   ],
   providers: [],
   bootstrap: [AppComponent],

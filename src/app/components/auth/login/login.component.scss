@@ -69,7 +69,7 @@
     .btn-primary {
         width: 100%;
         padding: 0.875rem;
-        background-color: #3182ce;
+        background-color: #2b6cb0; // Darkened from #3182ce for contrast
         color: white;
         border: none;
         border-radius: 8px;
@@ -82,8 +82,8 @@
         }
 
         &:disabled {
-            background-color: #a0aec0;
-            color: #edf2f7;
+            background-color: #cbd5e0;
+            color: #4a5568; // Darkened from #edf2f7 for contrast
             cursor: not-allowed;
         }
     }
@@ -94,11 +94,16 @@
         padding-top: 1.5rem;
         border-top: 1px solid #edf2f7;
 
-        a {
+        .btn-link {
+            background: none;
+            border: none;
+            padding: 0;
             color: #718096;
             font-size: 0.875rem;
             text-decoration: none;
             transition: color 0.2s;
+            cursor: pointer;
+            font-family: inherit;
 
             &:hover {
                 color: #3182ce;

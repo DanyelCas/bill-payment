@@ -49,7 +49,7 @@ import { Component, Input } from '@angular/core';
     .content {
       flex: 1;
       .title {
-        color: #718096;
+        color: #4a5568; // Darkened from #718096
         font-size: 0.85rem;
         margin: 0 0 0.25rem 0;
         font-weight: 500;
@@ -63,7 +63,7 @@ import { Component, Input } from '@angular/core';
         line-height: 1.2;
       }
       .subtext {
-        color: #a0aec0;
+        color: #4a5568; // Darkened from #a0aec0
         font-size: 0.8rem;
         margin-top: 0.25rem;
       }

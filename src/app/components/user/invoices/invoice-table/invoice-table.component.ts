@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Invoice } from '../../../../models/invoice.model';
 import { TableColumn } from '../../../../components/shared/ui/table/table.component';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   templateUrl: './invoice-table.component.html',
   styleUrls: ['./invoice-table.component.scss'],
 })
-export class InvoiceTableComponent implements OnChanges, OnInit {
+export class InvoiceTableComponent implements OnChanges {
   @Input() invoices: Invoice[] = [];
   @Input() isLoading = false;
   @Input() error: string | null = null;
@@ -28,10 +28,8 @@ export class InvoiceTableComponent implements OnChanges, OnInit {
   ];
   @Output() payInvoices = new EventEmitter<Invoice[]>();
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private readonly cdr: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-  }
 
   selectedInvoiceIds = new Set<number>();
 
@@ -367,7 +365,7 @@ export class InvoiceTableComponent implements OnChanges, OnInit {
     };
 
     const mesLower = mes.toLowerCase();
-    const monthIndex = meses[mesLower] !== undefined ? meses[mesLower] : 0;
+    const monthIndex = meses[mesLower] ?? 0;
 
     return new Date(anio, monthIndex, 1);
   }
@@ -400,14 +398,6 @@ export class InvoiceTableComponent implements OnChanges, OnInit {
     if (event.target.checked) {
       this.invoices
         .filter((inv) => this.isPending(inv))
-        .filter((inv) => this.isPending(inv))
-        // We could apply validation here too, but for "Select All" it's usually expected to auto-select what's possible
-        // Or select everything because if we select everything, the gaps are filled by definition.
-        // Simple approach: Allow "Select All" to select even partials if it fills gaps?
-        // Actually, "Select All" selects ALL displayed. If all displayed are selected, then by definition previous ones are selected too (unless search hidden them).
-        // Let's keep distinct behaviors: Toggle All adds IDs directly.
-        // Ideally we should verify if 'displayedInvoices' contains the gaps. 
-        // For simplicity and best UX in "Select All": Select all displayed.
         .forEach((inv) => this.selectedInvoiceIds.add(inv.id));
     } else {
       this.selectedInvoiceIds.clear();

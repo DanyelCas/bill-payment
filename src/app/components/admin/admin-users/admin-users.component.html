@@ -1,8 +1,10 @@
 <div class="users-container">
     <div class="actions-bar">
         <div class="search-container">
+            <label for="user-search" class="sr-only">Buscar usuarios</label>
             <lucide-icon name="search" class="search-icon"></lucide-icon>
-            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar usuarios..." class="search-input">
+            <input type="text" id="user-search" [(ngModel)]="searchTerm" placeholder="Buscar usuarios..."
+                class="search-input">
         </div>
         <button (click)="openAddModal()" class="btn-primary">
             <lucide-icon name="user-plus"></lucide-icon>
@@ -30,7 +32,7 @@
             <ng-template appTableTemplate="actions" let-user>
                 <div class="actions-cell">
                     <button (click)="openEditModal(user)" class="btn-icon" title="Editar">
-                        <lucide-icon name="edit"></lucide-icon>
+                        <lucide-icon name="pencil"></lucide-icon>
                     </button>
                     <button (click)="toggleUserStatus(user)" class="btn-icon"
                         [class.btn-inactivate]="user.status === 'active'"
@@ -53,7 +55,7 @@
 
 <!-- Modal -->
 <div class="modal-backdrop" *ngIf="showModal">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         <div class="modal-header">
             <h2>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
             <button (click)="closeModal()" class="btn-close">

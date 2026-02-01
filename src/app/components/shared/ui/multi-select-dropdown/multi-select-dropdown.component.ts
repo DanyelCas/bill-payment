@@ -19,13 +19,14 @@ export class MultiSelectDropdownComponent {
   @Input() selectedValues: Set<any> = new Set();
   @Input() singleSelection: boolean = false;
   @Input() showSearch: boolean = false;
+  @Input() id: string = ''; // ID for accessibility labels
 
   @Output() selectionChange = new EventEmitter<Set<any>>();
 
   isOpen = false;
   searchText = '';
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(private readonly elementRef: ElementRef) { }
 
   toggleDropdown(): void {
     this.isOpen = !this.isOpen;
@@ -42,12 +43,10 @@ export class MultiSelectDropdownComponent {
       this.selectedValues.clear();
       this.selectedValues.add(value);
       this.closeDropdown();
+    } else if (this.selectedValues.has(value)) {
+      this.selectedValues.delete(value);
     } else {
-      if (this.selectedValues.has(value)) {
-        this.selectedValues.delete(value);
-      } else {
-        this.selectedValues.add(value);
-      }
+      this.selectedValues.add(value);
     }
 
     // Convert to new Set to trigger change detection if needed, or just emit
@@ -75,7 +74,7 @@ export class MultiSelectDropdownComponent {
     const search = this.searchText.toLowerCase();
     return this.options.filter(opt =>
       opt.label.toLowerCase().includes(search) ||
-      (opt.value && opt.value.toString().toLowerCase().includes(search))
+      opt.value?.toString().toLowerCase().includes(search)
     );
   }
 

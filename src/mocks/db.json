@@ -11,6 +11,14 @@
       "name": "Juan Perez 4",
       "email": "daniel.castillo@gmail.com",
       "status": "active"
+    },
+    {
+      "id": "100003",
+      "name": "Daniel Castillo Quispe",
+      "email": "leinadcastilq@gmail.com",
+      "username": null,
+      "role": "USER",
+      "status": "active"
     }
   ],
   "invoices": [
@@ -153,6 +161,26 @@
       "fechaVencimiento": "2026-06-06",
       "estado": "pendiente",
       "id": 14
+    },
+    {
+      "customerId": "100003",
+      "servicio": "Gas Domiciliario",
+      "mes": "Enero",
+      "anio": 2026,
+      "monto": 500,
+      "fechaVencimiento": "2026-02-02",
+      "estado": "pendiente",
+      "id": 15
+    },
+    {
+      "customerId": "100003",
+      "servicio": "TV Cable",
+      "mes": "Diciembre",
+      "anio": 2025,
+      "monto": 200,
+      "fechaVencimiento": "2026-01-02",
+      "estado": "pendiente",
+      "id": 16
     }
   ],
   "receipts": [

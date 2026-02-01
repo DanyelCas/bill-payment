@@ -1,5 +1,6 @@
-<div class="modal-overlay" *ngIf="isOpen" (click)="onBackdropClick($event)" role="dialog" aria-modal="true"
-  [attr.aria-labelledby]="'modal-title-payment'" [attr.aria-describedby]="'modal-description-payment'">
+<div class="modal-overlay" *ngIf="isOpen" (click)="onBackdropClick($event)" (keydown.escape)="onClose()" tabindex="0"
+  role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-title-payment'"
+  [attr.aria-describedby]="'modal-description-payment'">
   <div class="modal-container" *ngIf="invoices.length > 0">
     <div class="modal-header">
       <h2 id="modal-title-payment" class="modal-title">
@@ -20,11 +21,11 @@
           <div class="detail-grid">
             <div class="detail-item">
               <span class="detail-label">Servicio:</span>
-              <span class="detail-value">{{ singleInvoice?.servicio }}</span>
+              <span class="detail-value">{{ singleInvoice.servicio }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Período:</span>
-              <span class="detail-value">{{ singleInvoice?.mes }} {{ singleInvoice?.anio }}</span>
+              <span class="detail-value">{{ singleInvoice.mes }} {{ singleInvoice.anio }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">Estado Actual:</span>

@@ -119,6 +119,11 @@
     padding: 0.6rem 1rem;
     cursor: pointer;
     transition: background-color 0.1s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
 
     &:hover {
         background-color: var(--color-gray-50);

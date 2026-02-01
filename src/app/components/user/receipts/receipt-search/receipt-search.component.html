@@ -5,8 +5,9 @@
             descargarlo.</p>
 
         <div class="input-group">
+            <label for="receipt-search" class="sr-only">Código de comprobante</label>
             <lucide-icon name="search" [size]="20" class="search-icon"></lucide-icon>
-            <input type="text" [(ngModel)]="searchId" (keydown.enter)="onSearch()"
+            <input type="text" id="receipt-search" [(ngModel)]="searchId" (keydown.enter)="onSearch()"
                 placeholder="Código de comprobante..." [disabled]="isLoading">
             <button class="btn" [class.btn-disabled]="!searchId || isLoading" (click)="onSearch()"
                 [disabled]="!searchId || isLoading">

@@ -6,5 +6,5 @@
 
   <app-invoice-payment [invoices]="selectedInvoicesForPayment" [isOpen]="isPaymentModalOpen"
     [isProcessing]="isProcessingPayment" [paymentSuccess]="paymentSuccess" [paymentError]="paymentError"
-    (close)="onClosePaymentModal()" (confirmPayment)="onConfirmPayment($event)"></app-invoice-payment>
+    (closed)="onClosePaymentModal()" (confirmPayment)="onConfirmPayment($event)"></app-invoice-payment>
 </div>

@@ -7,7 +7,7 @@ import { Invoice } from '../../../../models/invoice.model';
     <div class="widget-card">
       <div class="header">
         <div class="icon-wrapper" [class.overdue-icon]="hasOverdueInvoices">
-          <lucide-icon [name]="hasOverdueInvoices ? 'alert-circle' : 'calendar-clock'" [size]="20"></lucide-icon>
+          <lucide-icon [name]="hasOverdueInvoices ? 'circle-alert' : 'calendar-clock'" [size]="20"></lucide-icon>
         </div>
         <div class="header-content">
           <h4 class="title">{{ widgetTitle }}</h4>
@@ -121,7 +121,7 @@ import { Invoice } from '../../../../models/invoice.model';
 
     .title {
       font-size: 0.8rem;
-      color: #718096;
+      color: #4a5568; // Darkened from #718096
       margin: 0;
       font-weight: 600;
       text-transform: uppercase;
@@ -148,7 +148,7 @@ import { Invoice } from '../../../../models/invoice.model';
           justify-content: space-between;
           align-items: center;
           font-size: 0.8rem;
-          color: #718096;
+          color: #4a5568; // Darkened from #718096
       }
     }
 
@@ -248,7 +248,7 @@ import { Invoice } from '../../../../models/invoice.model';
                 &:last-child { margin-bottom: 0; }
 
                 .label {
-                  color: #718096;
+                  color: #4a5568; // Darkened from #718096
                   font-weight: 500;
                 }
 

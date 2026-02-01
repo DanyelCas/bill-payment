@@ -31,7 +31,7 @@ export interface DashboardStats {
 })
 export class DashboardService {
 
-    constructor(private invoiceService: InvoiceService) { }
+    constructor(private readonly invoiceService: InvoiceService) { }
 
     private parsePeriodoFrom(mes: string, anio: number): Date {
         // Format: "Enero", 2024
@@ -62,10 +62,10 @@ export class DashboardService {
                 const totalPending = pending.reduce((acc, curr) => acc + curr.monto, 0);
 
                 // Upcoming Dues
-                const sortedPending = pending.sort((a, b) =>
+                pending.sort((a, b) =>
                     this.parsePeriodoFrom(a.mes, a.anio).getTime() - this.parsePeriodoFrom(b.mes, b.anio).getTime()
                 );
-                const upcomingDues = sortedPending;
+                const upcomingDues = pending;
 
                 // --- Average Spend Calculation ---
                 const allByMonth: { [key: string]: number } = {};
@@ -76,7 +76,8 @@ export class DashboardService {
                     allByMonth[key] += inv.monto;
                 });
 
-                const allMonthKeys = Object.keys(allByMonth).sort((a, b) => {
+                const allMonthKeys = Object.keys(allByMonth);
+                allMonthKeys.sort((a, b) => {
                     const [yA, mA] = a.split('-').map(Number);
                     const [yB, mB] = b.split('-').map(Number);
                     return new Date(yB, mB).getTime() - new Date(yA, mA).getTime();
@@ -203,7 +204,6 @@ export class DashboardService {
                         // Check if overdue
                         let isOverdue = false;
                         if (inv.fechaVencimiento) {
-                            const dueDate = this.parsePeriodoFrom(inv.mes, inv.anio);
                             // Actually, let's use the same logic as in table component for consistency
                             const dateParts = inv.fechaVencimiento.split('-');
                             if (dateParts.length === 3) {

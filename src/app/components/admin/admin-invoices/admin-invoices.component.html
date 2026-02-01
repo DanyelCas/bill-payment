@@ -10,47 +10,51 @@
     <!-- Search Filters Row -->
     <div class="filters-row">
         <div class="filter-group">
-            <label>Buscador de Cliente</label>
+            <div class="search-labels">
+                <label for="search-customer-name">Nombre del Cliente</label>
+                <label for="search-customer-id">ID de Cliente</label>
+            </div>
             <div class="search-inputs">
                 <div class="input-with-icon">
                     <lucide-icon name="search"></lucide-icon>
-                    <input type="text" [(ngModel)]="searchFilters.customerName" placeholder="Buscar por nombre..."
-                        class="filter-input">
+                    <input type="text" id="search-customer-name" [(ngModel)]="searchFilters.customerName"
+                        placeholder="Buscar por nombre..." class="filter-input">
                 </div>
                 <div class="input-with-icon compact">
                     <lucide-icon name="search"></lucide-icon>
-                    <input type="text" [(ngModel)]="searchFilters.customerId" placeholder="ID..."
-                        class="filter-input id-input">
+                    <input type="text" id="search-customer-id" [(ngModel)]="searchFilters.customerId"
+                        placeholder="ID..." class="filter-input id-input">
                 </div>
             </div>
         </div>
 
         <div class="filters-grid">
             <div class="filter-group">
-                <label>Servicios</label>
-                <app-multi-select-dropdown [options]="serviceOptions" placeholder="Todos los servicios" icon="package"
+                <label for="filter-services">Servicios</label>
+                <app-multi-select-dropdown id="filter-services" [options]="serviceOptions"
+                    placeholder="Todos los servicios" icon="package"
                     (selectionChange)="onServiceSelectionChange($event)">
                 </app-multi-select-dropdown>
             </div>
 
             <div class="filter-group">
-                <label>Periodo (Mes)</label>
-                <app-multi-select-dropdown [options]="monthOptions" placeholder="Cualquier mes" icon="calendar-clock"
-                    (selectionChange)="onMonthSelectionChange($event)">
+                <label for="filter-months">Periodo (Mes)</label>
+                <app-multi-select-dropdown id="filter-months" [options]="monthOptions" placeholder="Cualquier mes"
+                    icon="calendar-clock" (selectionChange)="onMonthSelectionChange($event)">
                 </app-multi-select-dropdown>
             </div>
 
             <div class="filter-group">
-                <label>Año</label>
-                <app-multi-select-dropdown [options]="yearOptions" placeholder="Todos los años" icon="calendar-clock"
-                    (selectionChange)="onYearSelectionChange($event)">
+                <label for="filter-years">Año</label>
+                <app-multi-select-dropdown id="filter-years" [options]="yearOptions" placeholder="Todos los años"
+                    icon="calendar-clock" (selectionChange)="onYearSelectionChange($event)">
                 </app-multi-select-dropdown>
             </div>
 
             <div class="filter-group">
-                <label>Estado</label>
-                <app-multi-select-dropdown [options]="statusOptions" placeholder="Todos los estados" icon="inbox"
-                    (selectionChange)="onStatusSelectionChange($event)">
+                <label for="filter-status">Estado</label>
+                <app-multi-select-dropdown id="filter-status" [options]="statusOptions" placeholder="Todos los estados"
+                    icon="inbox" (selectionChange)="onStatusSelectionChange($event)">
                 </app-multi-select-dropdown>
             </div>
         </div>
@@ -92,7 +96,7 @@
             <ng-template appTableTemplate="actions" let-invoice>
                 <div class="actions-cell">
                     <button (click)="openEditModal(invoice)" class="btn-icon" title="Editar">
-                        <lucide-icon name="edit"></lucide-icon>
+                        <lucide-icon name="pencil"></lucide-icon>
                     </button>
                     <button (click)="deleteInvoice(invoice.id)" class="btn-icon btn-danger" title="Eliminar">
                         <lucide-icon name="trash-2"></lucide-icon>
@@ -122,10 +126,10 @@
 
         <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label>Cliente</label>
-                <app-multi-select-dropdown [options]="customerOptions" placeholder="Seleccione un cliente"
-                    [singleSelection]="true" [selectedValues]="selectedFormCustomer" [showSearch]="true"
-                    (selectionChange)="updateFormSelection('customerId', $event)" icon="user">
+                <label for="modal-customer">Cliente</label>
+                <app-multi-select-dropdown id="modal-customer" [options]="customerOptions"
+                    placeholder="Seleccione un cliente" [singleSelection]="true" [selectedValues]="selectedFormCustomer"
+                    [showSearch]="true" (selectionChange)="updateFormSelection('customerId', $event)" icon="user">
                 </app-multi-select-dropdown>
             </div>
 
@@ -133,10 +137,11 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Servicio</label>
+                    <label for="modal-service">Servicio</label>
                     <div class="dropdown-wrapper">
-                        <app-multi-select-dropdown [options]="serviceOptions" placeholder="Seleccione servicio"
-                            [singleSelection]="true" [selectedValues]="selectedFormService"
+                        <app-multi-select-dropdown id="modal-service" [options]="serviceOptions"
+                            placeholder="Seleccione servicio" [singleSelection]="true"
+                            [selectedValues]="selectedFormService"
                             (selectionChange)="updateFormSelection('servicio', $event)" icon="zap">
                         </app-multi-select-dropdown>
                     </div>
@@ -147,10 +152,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Mes</label>
+                    <label for="modal-month">Mes</label>
                     <div class="dropdown-wrapper">
-                        <app-multi-select-dropdown [options]="monthOptions" placeholder="Seleccione mes"
-                            [singleSelection]="true" [selectedValues]="selectedFormMonth"
+                        <app-multi-select-dropdown id="modal-month" [options]="monthOptions"
+                            placeholder="Seleccione mes" [singleSelection]="true" [selectedValues]="selectedFormMonth"
                             (selectionChange)="updateFormSelection('mes', $event)" icon="calendar">
                         </app-multi-select-dropdown>
                     </div>
@@ -160,8 +165,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Año</label>
-                    <input type="number" formControlName="anio" placeholder="Ej: 2026" min="2020" max="2099">
+                    <label for="modal-year">Año</label>
+                    <input type="number" id="modal-year" formControlName="anio" placeholder="Ej: 2026" min="2020"
+                        max="2099">
                     <div class="error-msg" *ngIf="invoiceForm.get('anio')?.touched && invoiceForm.get('anio')?.invalid">
                         Requerido
                     </div>
@@ -171,8 +177,8 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Monto (Bs)</label>
-                    <input type="number" formControlName="monto" step="0.01" min="0">
+                    <label for="modal-amount">Monto (Bs)</label>
+                    <input type="number" id="modal-amount" formControlName="monto" step="0.01" min="0">
                     <div class="error-msg"
                         *ngIf="invoiceForm.get('monto')?.touched && invoiceForm.get('monto')?.invalid">
                         Requerido
@@ -180,8 +186,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Vencimiento</label>
-                    <input type="date" formControlName="fechaVencimiento">
+                    <label for="modal-due-date">Vencimiento</label>
+                    <input type="date" id="modal-due-date" formControlName="fechaVencimiento">
                     <div class="error-msg"
                         *ngIf="invoiceForm.get('fechaVencimiento')?.touched && invoiceForm.get('fechaVencimiento')?.invalid">
                         Requerido

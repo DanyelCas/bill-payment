@@ -84,7 +84,7 @@ export interface MonthlySpend {
 
     .title {
       font-size: 0.8rem;
-      color: #718096;
+      color: #4a5568; // Darkened from #718096 for contrast
       margin: 0;
       font-weight: 600;
       text-transform: uppercase;
@@ -107,7 +107,7 @@ export interface MonthlySpend {
 
     .period-text {
       font-size: 0.75rem;
-      color: #a0aec0;
+      color: #4a5568; // Darkened from #a0aec0 for contrast
       margin-top: 0.25rem;
       margin-bottom: 0.75rem;
     }
@@ -192,7 +192,7 @@ export interface MonthlySpend {
 
     .no-data {
       font-size: 0.85rem;
-      color: #a0aec0;
+      color: #4a5568; // Darkened from #a0aec0
       font-style: italic;
     }
   `]

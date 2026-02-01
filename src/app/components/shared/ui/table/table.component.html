@@ -19,7 +19,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of paginatedData" (click)="onRowClick(item)" [class.clickable]="rowClickable">
+                <tr *ngFor="let item of paginatedData" (click)="onRowClick(item)" (keydown.enter)="onRowClick(item)"
+                    [tabIndex]="rowClickable ? 0 : -1" [class.clickable]="rowClickable"
+                    [attr.role]="rowClickable ? 'button' : null">
                     <td *ngFor="let col of columns" [class]="col.classes">
                         <!-- Template Render -->
                         <ng-container *ngIf="hasTemplate(col.key); else defaultCell">
@@ -47,7 +49,7 @@
         <button class="btn-page" [disabled]="currentPage === 1" (click)="prevPage()">
             <lucide-icon name="chevron-left" [size]="16"></lucide-icon>
         </button>
-        <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+        <output class="page-info">Página {{ currentPage }} de {{ totalPages }}</output>
         <button class="btn-page" [disabled]="currentPage === totalPages" (click)="nextPage()">
             <lucide-icon name="chevron-right" [size]="16"></lucide-icon>
         </button>

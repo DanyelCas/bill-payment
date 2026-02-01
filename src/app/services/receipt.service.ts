@@ -10,10 +10,10 @@ import { Invoice } from '../models/invoice.model';
     providedIn: 'root'
 })
 export class ReceiptService {
-    private apiUrl = 'http://localhost:3000/receipts'; // Hardcoded for now based on db.json location
+    private readonly apiUrl = 'http://localhost:3000/receipts'; // Hardcoded for now based on db.json location
 
     // Design System Colors
-    private colors = {
+    private readonly colors = {
         primary: '#1E3A8A',    // Deep Blue
         secondary: '#64748B',  // Slate
         gray100: '#F1F5F9',
@@ -23,7 +23,7 @@ export class ReceiptService {
         textDark: '#0F172A'
     };
 
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     /**
      * Creates a receipt record and saves it to the backend

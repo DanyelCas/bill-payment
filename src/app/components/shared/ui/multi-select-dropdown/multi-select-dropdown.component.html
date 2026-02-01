@@ -1,6 +1,6 @@
 <div class="dropdown-container" [class.is-open]="isOpen">
     <!-- Trigger Button -->
-    <button type="button" class="dropdown-trigger" (click)="toggleDropdown()">
+    <button type="button" class="dropdown-trigger" (click)="toggleDropdown()" [id]="id">
         <div class="trigger-content">
             <lucide-icon [name]="icon" [size]="18" class="trigger-icon"></lucide-icon>
             <span class="trigger-label">{{ buttonLabel }}</span>
@@ -17,12 +17,15 @@
         </div>
 
         <div class="dropdown-list">
-            <div class="dropdown-item" *ngFor="let option of filteredOptions"
-                (click)="toggleSelection(option.value, $event)" [class.selected]="isSelected(option.value)">
+            <button type="button" class="dropdown-item" *ngFor="let option of filteredOptions"
+                (click)="toggleSelection(option.value, $event)" (keydown.enter)="toggleSelection(option.value, $event)"
+                [class.selected]="isSelected(option.value)">
 
                 <div class="checkbox-wrapper">
-                    <input *ngIf="!singleSelection" type="checkbox" [checked]="isSelected(option.value)" tabindex="-1">
-                    <input *ngIf="singleSelection" type="radio" [checked]="isSelected(option.value)" tabindex="-1">
+                    <input *ngIf="!singleSelection" type="checkbox" [checked]="isSelected(option.value)" tabindex="-1"
+                        aria-hidden="true">
+                    <input *ngIf="singleSelection" type="radio" [checked]="isSelected(option.value)" tabindex="-1"
+                        aria-hidden="true">
                 </div>
 
                 <div class="item-content">
@@ -32,11 +35,11 @@
                     <span *ngIf="option.badgeClass" class="item-badge" [ngClass]="option.badgeClass">
                         {{ option.badgeLabel || option.label }}
                         <!-- Optional icon inside badge -->
-                        <lucide-icon *ngIf="option.badgeClass.includes('vencida')" name="alert-circle"
+                        <lucide-icon *ngIf="option.badgeClass.includes('vencida')" name="circle-alert"
                             [size]="12"></lucide-icon>
                     </span>
                 </div>
-            </div>
+            </button>
 
             <div class="no-results" *ngIf="filteredOptions.length === 0">
                 No se encontraron resultados
